@@ -1,0 +1,12 @@
+[
+  { "id": "q1", "text": "How comfortable are you with JavaScript?", "skillId": "s1", "options": ["Beginner", "Intermediate", "Advanced", "Expert"] },
+  { "id": "q2", "text": "Rate your Python proficiency.", "skillId": "s2", "options": ["Beginner", "Intermediate", "Advanced", "Expert"] },
+  { "id": "q3", "text": "Have you built React applications?", "skillId": "s3", "options": ["No experience", "Small projects", "Production apps", "Complex apps"] },
+  { "id": "q4", "text": "How well do you know Node.js/Express?", "skillId": "s4", "options": ["Never used", "Basic APIs", "Full-stack apps", "Microservices"] },
+  { "id": "q5", "text": "Rate your SQL/database skills.", "skillId": "s5", "options": ["Basic queries", "Joins & indexes", "Schema design", "Optimization"] },
+  { "id": "q6", "text": "Experience with Machine Learning?", "skillId": "s6", "options": ["None", "Courses only", "Projects", "Published/Production"] },
+  { "id": "q7", "text": "How strong is your communication?", "skillId": "s7", "options": ["Needs work", "Decent", "Strong", "Excellent"] },
+  { "id": "q8", "text": "Rate your teamwork ability.", "skillId": "s8", "options": ["Prefer solo", "OK in teams", "Good collaborator", "Team leader"] },
+  { "id": "q9", "text": "How do you approach problem-solving?", "skillId": "s9", "options": ["Need guidance", "Can solve with hints", "Independent solver", "Creative problem-solver"] },
+  { "id": "q10", "text": "Experience with cloud platforms (AWS/GCP)?", "skillId": "s10", "options": ["None", "Used briefly", "Comfortable", "Certified/Advanced"] }
+]

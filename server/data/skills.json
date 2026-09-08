@@ -1,0 +1,22 @@
+[
+  { "id": "s1", "name": "JavaScript", "category": "Programming" },
+  { "id": "s2", "name": "Python", "category": "Programming" },
+  { "id": "s3", "name": "React", "category": "Frontend" },
+  { "id": "s4", "name": "Node.js", "category": "Backend" },
+  { "id": "s5", "name": "SQL", "category": "Database" },
+  { "id": "s6", "name": "Machine Learning", "category": "AI/ML" },
+  { "id": "s7", "name": "Communication", "category": "Soft Skills" },
+  { "id": "s8", "name": "Teamwork", "category": "Soft Skills" },
+  { "id": "s9", "name": "Problem Solving", "category": "Soft Skills" },
+  { "id": "s10", "name": "AWS", "category": "Cloud" },
+  { "id": "s11", "name": "Docker", "category": "DevOps" },
+  { "id": "s12", "name": "Git", "category": "Tools" },
+  { "id": "s13", "name": "TypeScript", "category": "Programming" },
+  { "id": "s14", "name": "HTML/CSS", "category": "Frontend" },
+  { "id": "s15", "name": "REST APIs", "category": "Backend" },
+  { "id": "s16", "name": "Data Analysis", "category": "Data" },
+  { "id": "s17", "name": "Project Management", "category": "Soft Skills" },
+  { "id": "s18", "name": "Java", "category": "Programming" },
+  { "id": "s19", "name": "C++", "category": "Programming" },
+  { "id": "s20", "name": "Figma", "category": "Design" }
+]

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "c1",
+    "name": "TechCorp Solutions",
+    "industry": "Software",
+    "logo": "TC",
+    "color": "#3B82F6",
+    "jobs": [
+      { "id": "j1", "title": "Frontend Developer Intern", "type": "Internship", "requiredSkills": ["s3", "s1", "s14"], "stipend": "₹15,000/mo", "duration": "3 months", "description": "Build responsive UIs with React." },
+      { "id": "j2", "title": "Full Stack Developer", "type": "Full-time", "requiredSkills": ["s3", "s4", "s5", "s15"], "stipend": "₹8-12 LPA", "duration": "Permanent", "description": "End-to-end web application development." },
+      { "id": "j3", "title": "Data Science Intern", "type": "Internship", "requiredSkills": ["s2", "s6", "s16"], "stipend": "₹20,000/mo", "duration": "6 months", "description": "Work on ML models and data pipelines." }
+    ],
+    "courses": [
+      { "id": "co1", "title": "React Mastery Workshop", "skills": ["s3", "s13"], "duration": "2 weeks", "free": true },
+      { "id": "co2", "title": "Cloud Computing Basics", "skills": ["s10", "s11"], "duration": "4 weeks", "free": false }
+    ]
+  },
+  {
+    "id": "c2",
+    "name": "InnovateAI Labs",
+    "industry": "AI/ML",
+    "logo": "IA",
+    "color": "#8B5CF6",
+    "jobs": [
+      { "id": "j4", "title": "ML Engineer Intern", "type": "Internship", "requiredSkills": ["s2", "s6", "s16"], "stipend": "₹25,000/mo", "duration": "6 months", "description": "Research and deploy ML models." },
+      { "id": "j5", "title": "AI Research Associate", "type": "Full-time", "requiredSkills": ["s2", "s6", "s9"], "stipend": "₹15-20 LPA", "duration": "Permanent", "description": "Push boundaries in AI research." }
+    ],
+    "courses": [
+      { "id": "co3", "title": "Deep Learning Bootcamp", "skills": ["s2", "s6"], "duration": "6 weeks", "free": true }
+    ]
+  },
+  {
+    "id": "c3",
+    "name": "CloudNine Systems",
+    "industry": "Cloud/DevOps",
+    "logo": "C9",
+    "color": "#10B981",
+    "jobs": [
+      { "id": "j6", "title": "DevOps Intern", "type": "Internship", "requiredSkills": ["s11", "s10", "s12"], "stipend": "₹18,000/mo", "duration": "3 months", "description": "CI/CD pipelines and cloud infrastructure." },
+      { "id": "j7", "title": "Backend Developer", "type": "Full-time", "requiredSkills": ["s4", "s5", "s10", "s15"], "stipend": "₹10-15 LPA", "duration": "Permanent", "description": "Build scalable backend services." }
+    ],
+    "courses": [
+      { "id": "co4", "title": "AWS Certification Prep", "skills": ["s10"], "duration": "8 weeks", "free": false },
+      { "id": "co5", "title": "Docker & Kubernetes", "skills": ["s11"], "duration": "3 weeks", "free": true }
+    ]
+  },
+  {
+    "id": "c4",
+    "name": "DataVista Analytics",
+    "industry": "Data Analytics",
+    "logo": "DV",
+    "color": "#F59E0B",
+    "jobs": [
+      { "id": "j8", "title": "Data Analyst Intern", "type": "Internship", "requiredSkills": ["s5", "s16", "s2"], "stipend": "₹16,000/mo", "duration": "4 months", "description": "Analyze data and build dashboards." },
+      { "id": "j9", "title": "Business Intelligence Dev", "type": "Full-time", "requiredSkills": ["s5", "s16", "s17"], "stipend": "₹9-13 LPA", "duration": "Permanent", "description": "Turn data into business insights." }
+    ],
+    "courses": [
+      { "id": "co6", "title": "SQL for Analytics", "skills": ["s5", "s16"], "duration": "2 weeks", "free": true }
+    ]
+  }
+]
