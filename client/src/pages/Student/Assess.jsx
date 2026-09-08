@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getQuestions, assess } from '../../data/mock'
+
+const questions = getQuestions()
 
 export default function Assess() {
-  const [questions, setQuestions] = useState([])
   const [answers, setAnswers] = useState({})
   const [step, setStep] = useState(0)
   const [fade, setFade] = useState(true)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    fetch('/api/skills/questions').then(r => r.json()).then(setQuestions)
-  }, [])
 
   const handleAnswer = (qi, val) => {
     setFade(false)
@@ -25,14 +23,9 @@ export default function Assess() {
     if (step > 0) { setFade(false); setTimeout(() => { setStep(step - 1); setFade(true) }, 150) }
   }
 
-  const submit = async () => {
+  const submit = () => {
     const answerArray = questions.map((_, i) => answers[i] ?? 0)
-    const res = await fetch('/api/skills/assess', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answers: answerArray })
-    })
-    const data = await res.json()
+    const data = assess(answerArray)
     sessionStorage.setItem('skillProfile', JSON.stringify(data))
     navigate('/student/portfolio')
   }

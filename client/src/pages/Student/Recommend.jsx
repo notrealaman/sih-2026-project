@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getRecommendedJobs, getRecommendedCourses } from '../../data/mock'
 
 export default function Recommend() {
   const [jobs, setJobs] = useState([])
@@ -13,10 +14,8 @@ export default function Recommend() {
     const p = JSON.parse(data)
     setProfile(p)
     const skillIds = p.profile.map(s => s.id)
-    Promise.all([
-      fetch('/api/recommendations/jobs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ skillIds }) }).then(r => r.json()),
-      fetch('/api/recommendations/courses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ skillIds }) }).then(r => r.json())
-    ]).then(([j, c]) => { setJobs(j); setCourses(c) })
+    setJobs(getRecommendedJobs(skillIds))
+    setCourses(getRecommendedCourses(skillIds))
   }, [])
 
   if (!profile) return (

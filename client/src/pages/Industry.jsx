@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getCompanies } from '../data/mock'
 
 export default function Industry() {
   const [companies, setCompanies] = useState([])
 
-  useEffect(() => {
-    fetch('/api/opportunities/companies').then(r => r.json()).then(setCompanies)
-  }, [])
+  useEffect(() => { setCompanies(getCompanies()) }, [])
 
   return (
     <div className="min-h-screen bg-gray-950">
