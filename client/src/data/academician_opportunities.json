@@ -1,8 +1,8 @@
 [
-  { "id": "f1", "title": "Faculty Internship at IIT Bombay", "type": "Faculty Internship", "skills": ["s2", "s6", "s16"], "duration": "2 months", "description": "Collaborate on funded research projects." },
-  { "id": "f2", "title": "FDP on AI in Education", "type": "FDP", "skills": ["s6", "s2"], "duration": "1 week", "description": "Learn to integrate AI into curriculum." },
-  { "id": "f3", "title": "Industry Consultancy - Cloud Migration", "type": "Consultancy", "skills": ["s10", "s11", "s4"], "duration": "3 months", "description": "Help SMBs migrate to cloud." },
-  { "id": "f4", "title": "Workshop: Modern Web Dev", "type": "Workshop", "skills": ["s3", "s4", "s13"], "duration": "2 days", "description": "Hands-on React + Node.js workshop." },
-  { "id": "f5", "title": "Live Project: Campus Management System", "type": "Live Project", "skills": ["s3", "s4", "s5"], "duration": "6 months", "description": "Build a real system for a college." },
-  { "id": "f6", "title": "Research: NLP for Indian Languages", "type": "Research", "skills": ["s2", "s6"], "duration": "1 year", "description": "Published paper opportunity." }
+  { "id": "f1", "title": "Faculty Clinical Fellowship at AIIMS", "type": "Faculty Internship", "skills": ["s2", "s20", "s14"], "duration": "3 months", "description": "Supervised clinical practice and teaching." },
+  { "id": "f2", "title": "FDP on Medical Education Technology", "type": "FDP", "skills": ["s7", "s17"], "duration": "1 week", "description": "Modern pedagogy for medical colleges." },
+  { "id": "f3", "title": "Hospital Quality Audit Consultancy", "type": "Consultancy", "skills": ["s17", "s11", "s12"], "duration": "2 months", "description": "NABH accreditation readiness consulting." },
+  { "id": "f4", "title": "Workshop: Point-of-Care Ultrasound", "type": "Workshop", "skills": ["s6", "s15", "s1"], "duration": "3 days", "description": "Hands-on portable ultrasound training." },
+  { "id": "f5", "title": "Live Project: Hospital Management System", "type": "Live Project", "skills": ["s5", "s17", "s12"], "duration": "4 months", "description": "Build a real system for a rural hospital." },
+  { "id": "f6", "title": "Research: AI in Medical Imaging", "type": "Research", "skills": ["s6", "s16", "s20"], "duration": "1 year", "description": "Published paper opportunity in radiology AI." }
 ]

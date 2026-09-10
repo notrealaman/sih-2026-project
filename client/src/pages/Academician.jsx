@@ -34,8 +34,8 @@ export default function Academician() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Home
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Academician Portal</h1>
-          <p className="text-white/60">Faculty development, research & industry collaboration</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Faculty Portal</h1>
+          <p className="text-white/60">Clinical fellowships, FDPs & medical research</p>
         </div>
       </div>
 

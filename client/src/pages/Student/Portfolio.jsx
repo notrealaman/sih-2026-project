@@ -12,7 +12,7 @@ export default function Portfolio() {
   if (!profile) return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-6 px-4">
       <div className="w-20 h-20 bg-gray-800 rounded-3xl flex items-center justify-center text-4xl">📊</div>
-      <p className="text-xl text-gray-400 text-center">No skill profile yet. Take the assessment first.</p>
+      <p className="text-xl text-gray-400 text-center">No clinical profile yet. Take the assessment first.</p>
       <Link to="/student/assess" className="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-indigo-500 transition-colors">
         Start Assessment
       </Link>
@@ -33,8 +33,8 @@ export default function Portfolio() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Home
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">My Skill Portfolio</h1>
-          <p className="text-white/60">Your personalized skill assessment results</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">My Clinical Profile</h1>
+          <p className="text-white/60">Your skill assessment results</p>
         </div>
       </div>
 

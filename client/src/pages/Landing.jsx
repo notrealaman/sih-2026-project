@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
 const roles = [
-  { title: 'Student', desc: 'Skill assessment & job matching', path: '/student/assess', color: 'from-blue-500 to-indigo-600', hoverShadow: 'hover:shadow-blue-500/30', icon: '🎓' },
-  { title: 'Academician', desc: 'FDPs, research & collaboration', path: '/academician', color: 'from-purple-500 to-pink-600', hoverShadow: 'hover:shadow-purple-500/30', icon: '👨‍🏫' },
-  { title: 'Industry', desc: 'Post roles & discover talent', path: '/industry', color: 'from-emerald-500 to-teal-600', hoverShadow: 'hover:shadow-emerald-500/30', icon: '🏢' }
+  { title: 'Student', desc: 'Clinical skills assessment & placement', path: '/student/assess', color: 'from-blue-500 to-indigo-600', hoverShadow: 'hover:shadow-blue-500/30', icon: '🩺' },
+  { title: 'Academician', desc: 'Faculty fellowships, FDPs & research', path: '/academician', color: 'from-purple-500 to-pink-600', hoverShadow: 'hover:shadow-purple-500/30', icon: '👨‍⚕️' },
+  { title: 'Healthcare Org', desc: 'Post roles & discover talent', path: '/industry', color: 'from-emerald-500 to-teal-600', hoverShadow: 'hover:shadow-emerald-500/30', icon: '🏥' }
 ]
 
 export default function Landing() {
@@ -16,13 +16,13 @@ export default function Landing() {
       <div className="text-center mb-10 sm:mb-14 relative z-10">
         <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up">
           <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-          <span className="text-indigo-300 text-sm font-medium">Smart Skill Mapping Platform</span>
+          <span className="text-indigo-300 text-sm font-medium">Healthcare Skill Mapping Platform</span>
         </div>
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 animate-fade-in-up delay-100 leading-tight">
           Academia <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">↔</span> Industry
         </h1>
         <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
-          Bridge the gap between skills taught and skills needed.
+          Bridge the gap between medical education and clinical practice.
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export default function Landing() {
       </div>
 
       <div className="mt-14 text-center relative z-10 animate-fade-in-up delay-300">
-        <p className="text-gray-600 text-sm">Built for Smart India Hackathon 2026</p>
+        <p className="text-gray-600 text-sm">Built for Smart India Hackathon 2026 — Healthcare Edition</p>
       </div>
     </div>
   )

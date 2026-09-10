@@ -17,8 +17,8 @@ export default function Industry() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Home
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Industry Portal</h1>
-          <p className="text-white/60">Post opportunities and discover talent</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Healthcare Portal</h1>
+          <p className="text-white/60">Post positions and discover medical talent</p>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export default function Industry() {
             {company.courses.length > 0 && (
               <>
                 <h3 className="font-bold text-white mb-4 flex items-center gap-2">
-                  <span className="text-lg">📚</span> Learning Programs
+                  <span className="text-lg">📚</span> Training Programs
                   <span className="bg-gray-800 text-gray-400 text-xs font-bold px-2 py-0.5 rounded-full">{company.courses.length}</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

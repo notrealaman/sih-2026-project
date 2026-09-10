@@ -21,7 +21,7 @@ export default function Recommend() {
   if (!profile) return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-6 px-4">
       <div className="w-20 h-20 bg-gray-800 rounded-3xl flex items-center justify-center text-4xl">🎯</div>
-      <p className="text-xl text-gray-400 text-center">Take the assessment first to see recommendations.</p>
+      <p className="text-xl text-gray-400 text-center">Take the assessment first to see clinical opportunities.</p>
       <Link to="/student/assess" className="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-indigo-500 transition-colors">Start Assessment</Link>
     </div>
   )
@@ -39,8 +39,8 @@ export default function Recommend() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Home
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Recommendations</h1>
-          <p className="text-white/60">Matched to your skill profile</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Opportunities For You</h1>
+          <p className="text-white/60">Matched to your clinical skill profile</p>
         </div>
       </div>
 
@@ -49,7 +49,7 @@ export default function Recommend() {
         <div className="flex gap-2 mb-8 bg-gray-900 p-1.5 rounded-2xl w-fit border border-gray-800">
           <button onClick={() => setTab('jobs')}
             className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${tab === 'jobs' ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}>
-            💼 Jobs ({jobs.length})
+            💼 Positions ({jobs.length})
           </button>
           <button onClick={() => setTab('courses')}
             className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${tab === 'courses' ? 'bg-purple-600 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}>
