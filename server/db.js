@@ -1,24 +1,15 @@
 import pg from 'pg'
-import { mkdirSync } from 'fs'
-import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const UPLOAD_DIR = process.env.UPLOAD_DIR || join(__dirname, '../uploads')
-mkdirSync(UPLOAD_DIR, { recursive: true })
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes('neon.tech') ? { rejectUnauthorized: false } : false
+  ssl: { rejectUnauthorized: false }
 })
 
-// Convert ? placeholders to $1, $2, ...
 function toPg(sql) {
   let i = 0
   return sql.replace(/\?/g, () => `$${++i}`)
 }
 
-// Wrapper matching the old db.prepare() API
 function prepare(sql) {
   const pgSql = toPg(sql)
   return {
@@ -34,24 +25,9 @@ function prepare(sql) {
   }
 }
 
-// Sync-style wrappers used by seed.js — these return promises
 const db = {
   prepare,
-  query: (sql, params) => pool.query(toPg(sql), params || []),
-  transaction: (fn) => async (...args) => {
-    const client = await pool.connect()
-    try {
-      await client.query('BEGIN')
-      const result = await fn(...args)(client)
-      await client.query('COMMIT')
-      return result
-    } catch (e) {
-      await client.query('ROLLBACK')
-      throw e
-    } finally {
-      client.release()
-    }
-  }
+  query: (sql, params) => pool.query(toPg(sql), params || [])
 }
 
 export async function initDB() {
