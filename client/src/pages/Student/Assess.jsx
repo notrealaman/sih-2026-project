@@ -1,14 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getQuestions, assess } from '../../data/mock'
-
-const questions = getQuestions()
+import { api } from '../../api'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Assess() {
+  const [questions, setQuestions] = useState([])
   const [answers, setAnswers] = useState({})
   const [step, setStep] = useState(0)
   const [fade, setFade] = useState(true)
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const { user } = useAuth()
+
+  useEffect(() => {
+    api.getQuestions().then(q => { setQuestions(q); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
 
   const handleAnswer = (qi, val) => {
     setFade(false)
@@ -23,16 +29,23 @@ export default function Assess() {
     if (step > 0) { setFade(false); setTimeout(() => { setStep(step - 1); setFade(true) }, 150) }
   }
 
-  const submit = () => {
+  const submit = async () => {
+    if (!user) return navigate('/login')
     const answerArray = questions.map((_, i) => answers[i] ?? 0)
-    const data = assess(answerArray)
+    const data = await api.assess(answerArray)
     sessionStorage.setItem('skillProfile', JSON.stringify(data))
     navigate('/student/portfolio')
   }
 
-  if (!questions.length) return (
+  if (loading) return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center">
       <div className="text-white text-lg animate-pulse">Loading questions...</div>
+    </div>
+  )
+
+  if (!questions.length) return (
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="text-gray-400 text-lg">No questions available.</div>
     </div>
   )
 
@@ -42,7 +55,6 @@ export default function Assess() {
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col">
-      {/* Top bar */}
       <div className="bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
         <button onClick={goBack} disabled={step === 0}
           className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-800 text-gray-400 disabled:opacity-20 hover:bg-gray-700 hover:text-white transition-all">
@@ -54,12 +66,11 @@ export default function Assess() {
         <span className="text-sm font-semibold text-gray-400 w-12 text-right">{step + 1}/{questions.length}</span>
       </div>
 
-      {/* Question card */}
       <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
         <div className={`w-full max-w-lg transition-all duration-300 ${fade ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <div className="bg-gray-900 rounded-3xl p-6 sm:p-8 border border-gray-800 shadow-2xl">
             <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-3 py-1 mb-6">
-              <span className="text-indigo-400 text-xs font-bold uppercase tracking-wider">{q.skillName}</span>
+              <span className="text-indigo-400 text-xs font-bold uppercase tracking-wider">{q.skill_name}</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-8 leading-snug">{q.text}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -81,7 +92,6 @@ export default function Assess() {
         </div>
       </div>
 
-      {/* Submit button */}
       {step === questions.length - 1 && answered && (
         <div className="p-4 sm:p-6 flex justify-center animate-fade-in-up">
           <button onClick={submit}

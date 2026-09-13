@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const roles = [
   { title: 'Student', desc: 'Clinical skills assessment & placement', path: '/student/assess', color: 'from-blue-500 to-indigo-600', hoverShadow: 'hover:shadow-blue-500/30', icon: '🩺' },
@@ -7,11 +8,33 @@ const roles = [
 ]
 
 export default function Landing() {
+  const { user, logout } = useAuth()
+
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center px-4 py-16 sm:p-8 relative overflow-hidden">
       <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-3xl" />
+
+      {/* Top nav */}
+      <div className="absolute top-6 right-6 flex items-center gap-3 z-20">
+        {user ? (
+          <>
+            <Link to={user.role === 'student' ? '/student/portfolio' : '/dashboard'} className="bg-gray-800 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-gray-700 transition-colors">
+              Dashboard
+            </Link>
+            <button onClick={logout} className="text-gray-400 text-sm font-medium hover:text-white transition-colors">
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="text-gray-400 text-sm font-medium hover:text-white transition-colors">Sign in</Link>
+            <Link to="/register" className="bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-indigo-500 transition-colors">
+              Get Started
+            </Link>
+          </>
+        )}
+      </div>
 
       <div className="text-center mb-10 sm:mb-14 relative z-10">
         <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up">
@@ -19,14 +42,13 @@ export default function Landing() {
           <span className="text-indigo-300 text-sm font-medium">Healthcare Skill Mapping Platform</span>
         </div>
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 animate-fade-in-up delay-100 leading-tight">
-          Academia <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">↔</span> Industry
+          Med<span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Bridge</span>
         </h1>
         <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
           Bridge the gap between medical education and clinical practice.
         </p>
       </div>
 
-      {/* Compact button row */}
       <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 relative z-10 animate-fade-in-up delay-200">
         {roles.map((role) => (
           <Link key={role.title} to={role.path}

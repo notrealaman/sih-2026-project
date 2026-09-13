@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getAcademicianOpps } from '../data/mock'
+import { api } from '../api'
 
 const typeColors = {
   'Faculty Internship': 'bg-blue-500/10 border-blue-500/20 text-blue-400',
@@ -19,7 +19,7 @@ export default function Academician() {
   const [opps, setOpps] = useState([])
   const [filter, setFilter] = useState('All')
 
-  useEffect(() => { setOpps(getAcademicianOpps()) }, [])
+  useEffect(() => { api.getAcademicOpps().then(setOpps).catch(() => {}) }, [])
 
   const types = ['All', ...new Set(opps.map(o => o.type))]
   const filtered = filter === 'All' ? opps : opps.filter(o => o.type === filter)
