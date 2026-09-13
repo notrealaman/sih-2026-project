@@ -3,23 +3,14 @@ import { v4 as uuid } from 'uuid'
 import multer from 'multer'
 import { auth } from '../auth.js'
 import db from '../db.js'
-import { fileURLToPath } from 'url'
-import { dirname, join, extname } from 'path'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const UPLOAD_DIR = process.env.UPLOAD_DIR || join(__dirname, '../uploads')
-
-const storage = multer.diskStorage({
-  destination: UPLOAD_DIR,
-  filename: (req, file, cb) => cb(null, `${uuid()}${extname(file.originalname)}`)
-})
-const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } })
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } })
 
 const router = Router()
 
 router.post('/upload', auth, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ path: `/uploads/${req.file.filename}`, originalName: req.file.originalname, size: req.file.size })
+  res.json({ path: `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64').slice(0, 50)}...`, originalName: req.file.originalname, size: req.file.size })
 })
 
 router.post('/certificates', auth, async (req, res) => {
