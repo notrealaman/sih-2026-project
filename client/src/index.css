@@ -23,7 +23,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -web
 .delay-7 { animation-delay: 0.35s } .delay-8 { animation-delay: 0.4s } .delay-9 { animation-delay: 0.45s }
 .delay-10 { animation-delay: 0.5s } .delay-12 { animation-delay: 0.6s }
 
-/* Professional card system */
+/* Card system */
 .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; transition: all 0.2s ease; }
 .card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
 .card-elevated { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); }
@@ -65,8 +65,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -web
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
 
 /* Tab system */
-.tab-group { display: flex; gap: 2px; background: #f1f5f9; border-radius: 8px; padding: 3px; }
-.tab { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; transition: all 0.15s ease; border: none; background: transparent; }
+.tab-group { display: flex; gap: 2px; background: #f1f5f9; border-radius: 8px; padding: 3px; flex-wrap: wrap; }
+.tab { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; transition: all 0.15s ease; border: none; background: transparent; white-space: nowrap; }
 .tab:hover { color: #334155; }
 .tab-active { background: #fff; color: #0f172a; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
 
@@ -77,3 +77,39 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -web
 .stat-change { font-size: 12px; font-weight: 600; margin-top: 8px; }
 .stat-up { color: #16a34a; }
 .stat-down { color: #dc2626; }
+
+/* Mobile nav overlay */
+.nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 40; display: none; }
+.nav-overlay.open { display: block; }
+
+/* Mobile nav drawer */
+.nav-drawer { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; background: #fff; z-index: 50; transform: translateX(-100%); transition: transform 0.25s ease; box-shadow: 4px 0 24px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+.nav-drawer.open { transform: translateX(0); }
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .stat-value { font-size: 22px; }
+  .btn-primary, .btn-secondary { padding: 8px 16px; font-size: 13px; }
+  .table-header, .table-row { padding: 12px 16px; font-size: 11px; }
+  .tab { padding: 6px 12px; font-size: 12px; }
+  .badge { padding: 3px 8px; font-size: 11px; }
+  .input { padding: 8px 12px; font-size: 13px; }
+}
+
+/* Responsive grids via Tailwind */
+@media (max-width: 640px) {
+  .grid-2-responsive { grid-template-columns: 1fr !important; }
+  .grid-3-responsive { grid-template-columns: 1fr !important; }
+  .grid-4-responsive { grid-template-columns: 1fr 1fr !important; }
+  .grid-sidebar-main { grid-template-columns: 1fr !important; }
+  .hidden-mobile { display: none !important; }
+  .flex-mobile-col { flex-direction: column !important; }
+  .w-full-mobile { width: 100% !important; }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .grid-4-responsive { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-3-responsive { grid-template-columns: repeat(2, 1fr) !important; }
+  .hidden-tablet { display: none !important; }
+}

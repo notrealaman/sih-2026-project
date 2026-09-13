@@ -4,15 +4,13 @@ import { useAuth } from '../../context/AuthContext'
 import TopNav from '../../components/TopNav'
 import JobDetailModal from '../../components/JobDetailModal'
 
-const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
-
 function MatchBar({ score }) {
   const color = score >= 70 ? '#16a34a' : score >= 40 ? '#d97706' : '#cbd5e1'
   const textColor = score >= 70 ? '#15803d' : score >= 40 ? '#b45309' : '#64748b'
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 140 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
       <div style={{ flex: 1 }}><div className="progress-track"><div className="progress-fill" style={{ width: `${score}%`, background: color }} /></div></div>
-      <span style={{ fontSize: 14, fontWeight: 700, fontVariantNumeric: 'tabular-nums', color: textColor, width: 40, textAlign: 'right' }}>{score}%</span>
+      <span style={{ fontSize: 13, fontWeight: 700, fontVariantNumeric: 'tabular-nums', color: textColor, width: 36, textAlign: 'right', flexShrink: 0 }}>{score}%</span>
     </div>
   )
 }
@@ -53,11 +51,11 @@ export default function Recommend() {
   if (!profile) return (
     <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Opportunities" />
-      <div style={{ ...wrap, paddingTop: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
         <div style={{ width: 64, height: 64, background: '#f1f5f9', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
         </div>
-        <p style={{ color: '#475569', fontWeight: 500 }}>Complete the assessment to see matched positions.</p>
+        <p style={{ color: '#475569', fontWeight: 500, textAlign: 'center' }}>Complete the assessment to see matched positions.</p>
       </div>
     </div>
   )
@@ -65,35 +63,42 @@ export default function Recommend() {
   return (
     <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Opportunities" subtitle={`${jobs.length} positions ranked by skill compatibility`} />
-
-      <div style={{ ...wrap, paddingTop: 40, paddingBottom: 60 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 16 }}>
-          <div className="tab-group">
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 60px' }}>
+        {/* Filters */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+          <div className="tab-group" style={{ overflow: 'auto', maxWidth: '100%' }}>
             {types.map(t => <button key={t} onClick={() => setFilter(t)} className={`tab ${filter === t ? 'tab-active' : ''}`}>{t === 'all' ? 'All' : t}</button>)}
           </div>
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="input" style={{ width: 'auto', fontSize: 13, padding: '6px 12px' }}>
+          <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="input" style={{ width: 'auto', fontSize: 13, padding: '6px 12px', flexShrink: 0 }}>
             <option value="match">Sort by Match</option><option value="name">Sort by Name</option>
           </select>
         </div>
 
+        {/* Job cards */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {sorted.map((job, i) => (
-            <div key={job.id} className="card-elevated" style={{ padding: 20, cursor: 'pointer', transition: 'border-color 0.15s' }} onClick={() => setSelectedJob(job)}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 8, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{job.org_name?.[0] || 'H'}</div>
+          {sorted.map((job) => (
+            <div key={job.id} className="card-elevated" style={{ padding: 16, cursor: 'pointer', transition: 'border-color 0.15s' }} onClick={() => setSelectedJob(job)}>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700, fontSize: 13, flexShrink: 0 }}>{job.org_name?.[0] || 'H'}</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                    <h3 style={{ fontWeight: 600, color: '#0f172a' }}>{job.title}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2, flexWrap: 'wrap' }}>
+                    <h3 style={{ fontWeight: 600, color: '#0f172a', fontSize: 14 }}>{job.title}</h3>
                     <span className="badge badge-gray" style={{ fontSize: 10 }}>{job.type}</span>
                   </div>
-                  <p style={{ fontSize: 14, color: '#64748b' }}>{job.org_name} · {job.duration} · {job.stipend}</p>
-                  <p style={{ fontSize: 14, color: '#94a3b8', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{job.description}</p>
+                  <p style={{ fontSize: 13, color: '#64748b' }}>{job.org_name} · {job.duration} · {job.stipend}</p>
+                  <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{job.description}</p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 8 }}>
                     {job.required_skills.slice(0, 5).map(s => <span key={s} style={{ fontSize: 10, fontWeight: 500, padding: '2px 8px', borderRadius: 4, background: '#f1f5f9', color: '#64748b' }}>{s}</span>)}
                     {job.required_skills.length > 5 && <span style={{ fontSize: 10, color: '#94a3b8' }}>+{job.required_skills.length - 5}</span>}
                   </div>
+                  {/* Mobile: match bar + apply row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }} className="show-mobile-flex">
+                    <MatchBar score={job.matchScore} />
+                    {applied.has(job.id) ? <span className="badge badge-green" style={{ fontSize: 11, flexShrink: 0 }}>Applied ✓</span> : <button onClick={e => { e.stopPropagation(); handleApply(job.id) }} className="btn-primary" style={{ fontSize: 12, padding: '6px 14px', flexShrink: 0 }}>Apply</button>}
+                  </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+                {/* Desktop: match bar + apply */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }} className="hide-mobile">
                   <MatchBar score={job.matchScore} />
                   {applied.has(job.id) ? <span className="badge badge-green" style={{ fontSize: 12 }}>Applied ✓</span> : <button onClick={e => { e.stopPropagation(); handleApply(job.id) }} className="btn-primary" style={{ fontSize: 13, padding: '8px 16px' }}>Apply</button>}
                 </div>
@@ -104,6 +109,10 @@ export default function Recommend() {
         </div>
       </div>
       {selectedJob && <JobDetailModal job={selectedJob} onClose={() => setSelectedJob(null)} onApply={(id) => { handleApply(id); setSelectedJob(null) }} applied={applied.has(selectedJob?.id)} />}
+      <style>{`
+        @media (min-width: 641px) { .show-mobile-flex { display: none !important; } }
+        @media (max-width: 640px) { .hide-mobile { display: none !important; } }
+      `}</style>
     </div>
   )
 }

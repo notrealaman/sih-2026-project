@@ -4,8 +4,6 @@ import { api } from '../../api'
 import { useAuth } from '../../context/AuthContext'
 import TopNav from '../../components/TopNav'
 
-const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
-
 function RadarChart({ skills, size = 280 }) {
   const cx = size / 2, cy = size / 2, r = size / 2 - 30
   const n = skills.length
@@ -38,14 +36,14 @@ function SkillRow({ skill, index }) {
   const badge = skill.level >= 75 ? 'badge-green' : skill.level >= 50 ? 'badge-blue' : skill.level >= 25 ? 'badge-yellow' : 'badge-gray'
   const label = skill.level >= 75 ? 'Expert' : skill.level >= 50 ? 'Proficient' : skill.level >= 25 ? 'Learning' : 'Beginner'
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 0', borderBottom: '1px solid #f1f5f9' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: '1px solid #f1f5f9' }}>
       <span style={{ fontSize: 12, fontWeight: 500, color: '#94a3b8', width: 20 }}>{index + 1}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ fontSize: 14, fontWeight: 500, color: '#0f172a' }}>{skill.name}</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, gap: 8 }}>
+          <span style={{ fontSize: 14, fontWeight: 500, color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
             <span className={`badge ${badge}`} style={{ fontSize: 10 }}>{label}</span>
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#475569', fontVariantNumeric: 'tabular-nums', width: 40, textAlign: 'right' }}>{skill.level}%</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: '#475569', fontVariantNumeric: 'tabular-nums', width: 36, textAlign: 'right' }}>{skill.level}%</span>
           </div>
         </div>
         <div className="progress-track">
@@ -68,7 +66,7 @@ export default function Portfolio() {
   if (!profile) return (
     <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Skill Profile" />
-      <div style={{ ...wrap, paddingTop: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
         <div style={{ width: 64, height: 64, background: '#f1f5f9', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9l3 3-3 3M15 15h-3" /></svg>
         </div>
@@ -81,12 +79,11 @@ export default function Portfolio() {
   return (
     <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Skill Profile" subtitle="Assessment results and competency mapping" />
-
-      <div style={{ ...wrap, paddingTop: 40, paddingBottom: 60 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 60px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }} className="portfolio-grid">
           <div>
-            <div className="card-elevated" style={{ padding: 24 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+            <div className="card-elevated" style={{ padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                 <h2 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a' }}>Skill Breakdown</h2>
                 <span className="badge badge-gray">{profile.profile.length} skills</span>
               </div>
@@ -94,11 +91,11 @@ export default function Portfolio() {
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div className="card-elevated" style={{ padding: 24 }}>
+            <div className="card-elevated" style={{ padding: 20 }}>
               <h3 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 16 }}>Skill Radar</h3>
               <div style={{ display: 'flex', justifyContent: 'center' }}><RadarChart skills={profile.profile.slice(0, 10)} /></div>
             </div>
-            <div className="card-elevated" style={{ padding: 24 }}>
+            <div className="card-elevated" style={{ padding: 20 }}>
               <h3 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 16 }}>Summary</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
                 <div style={{ textAlign: 'center' }}><div style={{ fontSize: 24, fontWeight: 700, color: '#0f172a' }}>{profile.profile.length}</div><div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>Skills</div></div>
@@ -106,7 +103,7 @@ export default function Portfolio() {
                 <div style={{ textAlign: 'center' }}><div style={{ fontSize: 24, fontWeight: 700, color: '#d97706' }}>{profile.gapSkills.length}</div><div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>Gaps</div></div>
               </div>
             </div>
-            <div className="card-elevated" style={{ padding: 24 }}>
+            <div className="card-elevated" style={{ padding: 20 }}>
               <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Strengths</h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
                 {profile.topSkills.length ? profile.topSkills.map(s => <span key={s.id} className="badge badge-green" style={{ fontSize: 10 }}>{s.name}</span>) : <span style={{ fontSize: 12, color: '#94a3b8' }}>None identified</span>}
@@ -120,6 +117,11 @@ export default function Portfolio() {
           </div>
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .portfolio-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   )
 }

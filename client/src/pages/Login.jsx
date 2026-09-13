@@ -19,21 +19,21 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div style={{ minHeight: '100vh', display: 'flex' }}>
       {/* Left — illustration panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        <div className="relative z-10 px-12 max-w-md">
-          <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-8">
+      <div style={{ flex: '0 0 50%', background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }} className="login-left-panel">
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        <div style={{ position: 'relative', zIndex: 10, padding: '0 48px', maxWidth: 440 }}>
+          <div style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.1)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 32 }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6v0a6 6 0 006-2V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3" /><path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-2v-4" /><circle cx="20" cy="10" r="2" /></svg>
           </div>
-          <h2 className="text-3xl font-bold text-white mb-4">Welcome back to MedBridge</h2>
-          <p className="text-slate-400 leading-relaxed">Sign in to access your clinical skill assessments, job matches, and application pipeline.</p>
-          <div className="mt-12 grid grid-cols-2 gap-4">
+          <h2 style={{ fontSize: 30, fontWeight: 700, color: '#fff', marginBottom: 16, lineHeight: 1.3 }}>Welcome back to MedBridge</h2>
+          <p style={{ color: '#94a3b8', lineHeight: 1.7, fontSize: 15 }}>Sign in to access your clinical skill assessments, job matches, and application pipeline.</p>
+          <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             {[{ n: '2,400+', l: 'Students' }, { n: '85', l: 'Partners' }, { n: '1,200+', l: 'Placements' }, { n: '94%', l: 'Match Rate' }].map(s => (
-              <div key={s.l} className="bg-white/5 rounded-lg p-3">
-                <div className="text-lg font-bold text-white">{s.n}</div>
-                <div className="text-xs text-slate-400">{s.l}</div>
+              <div key={s.l} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 8, padding: 12 }}>
+                <div style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>{s.n}</div>
+                <div style={{ fontSize: 12, color: '#94a3b8' }}>{s.l}</div>
               </div>
             ))}
           </div>
@@ -41,57 +41,62 @@ export default function Login() {
       </div>
 
       {/* Right — form */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 bg-white">
-        <div className="w-full max-w-sm">
-          <Link to="/" className="flex items-center gap-2 mb-10">
-            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 24px', background: '#fff' }}>
+        <div style={{ width: '100%', maxWidth: 400 }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 40, textDecoration: 'none' }}>
+            <div style={{ width: 32, height: 32, background: '#0f172a', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6v0a6 6 0 006-2V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3" /><path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-2v-4" /><circle cx="20" cy="10" r="2" /></svg>
             </div>
-            <span className="text-lg font-bold text-slate-900">MedBridge</span>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#0f172a' }}>MedBridge</span>
           </Link>
 
-          <h1 className="text-2xl font-bold text-slate-900 mb-1">Sign in</h1>
-          <p className="text-sm text-slate-500 mb-8">Enter your credentials to continue.</p>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Sign in</h1>
+          <p style={{ fontSize: 14, color: '#64748b', marginBottom: 32 }}>Enter your credentials to continue.</p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">{error}</div>
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', fontSize: 14, padding: '12px 16px', borderRadius: 8 }}>{error}</div>
             )}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
+              <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Email address</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="input" placeholder="you@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Password</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="input" placeholder="••••••••" />
             </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full justify-center py-2.5">
+            <button type="submit" disabled={loading} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '10px 0' }}>
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 mt-6">
-            No account? <Link to="/register" className="font-medium text-blue-600 hover:text-blue-700">Create one</Link>
+          <p style={{ textAlign: 'center', fontSize: 14, color: '#64748b', marginTop: 24 }}>
+            No account? <Link to="/register" style={{ fontWeight: 600, color: '#2563eb', textDecoration: 'none' }}>Create one</Link>
           </p>
 
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <p className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">Demo Accounts</p>
-            <div className="space-y-2">
+          <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid #f1f5f9' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Demo Accounts</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
                 { email: 'priya@demo.com', label: 'Priya Sharma — Student', badge: 'Student' },
                 { email: 'rajesh@demo.com', label: 'Dr. Rajesh Kumar — Academician', badge: 'Faculty' },
                 { email: 'apollohospitals@demo.com', label: 'Apollo Hospitals — Organization', badge: 'Org' }
               ].map(d => (
                 <button key={d.email} type="button" onClick={() => { setEmail(d.email); setPassword('password123') }}
-                  className="w-full text-left px-3 py-2.5 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all flex items-center justify-between group">
-                  <span className="text-sm text-slate-600 group-hover:text-slate-900">{d.label}</span>
-                  <span className="badge badge-gray text-[10px]">{d.badge}</span>
+                  style={{ width: '100%', textAlign: 'left', padding: '10px 12px', borderRadius: 8, border: '1px solid #e2e8f0', background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.15s' }}>
+                  <span style={{ fontSize: 13, color: '#475569' }}>{d.label}</span>
+                  <span className="badge badge-gray" style={{ fontSize: 10 }}>{d.badge}</span>
                 </button>
               ))}
             </div>
           </div>
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .login-left-panel { display: none !important; }
+        }
+      `}</style>
     </div>
   )
 }

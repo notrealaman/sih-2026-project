@@ -7,19 +7,24 @@ export default function JobDetailModal({ job, onClose, onApply, applied }) {
   const { user } = useAuth()
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 16 }} onClick={onClose}>
-      <div style={{ background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0', width: '100%', maxWidth: 640, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }} onClick={e => e.stopPropagation()}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', zIndex: 50, padding: 0 }} onClick={onClose} className="job-modal-overlay">
+      <div style={{ background: '#fff', borderRadius: '12px 12px 0 0', width: '100%', maxWidth: 640, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 -10px 40px rgba(0,0,0,0.15)' }} onClick={e => e.stopPropagation()} className="job-modal-content">
+        {/* Drag handle */}
+        <div style={{ padding: '12px 0 0', display: 'flex', justifyContent: 'center' }} className="show-mobile-only">
+          <div style={{ width: 36, height: 4, borderRadius: 2, background: '#e2e8f0' }} />
+        </div>
+
         {/* Header */}
-        <div style={{ padding: '20px 24px 0' }}>
+        <div style={{ padding: '16px 24px 0' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
               <div style={{ width: 44, height: 44, borderRadius: 10, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700, fontSize: 16, flexShrink: 0 }}>{job.org_name?.[0] || 'H'}</div>
-              <div>
+              <div style={{ minWidth: 0 }}>
                 <h2 style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 2 }}>{job.title}</h2>
                 <p style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>{job.org_name}</p>
               </div>
             </div>
-            <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: '#f1f5f9', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+            <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: '#f1f5f9', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
             </button>
           </div>
@@ -64,7 +69,7 @@ export default function JobDetailModal({ job, onClose, onApply, applied }) {
         </div>
 
         {/* Footer */}
-        <div style={{ padding: '16px 24px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+        <div style={{ padding: '16px 24px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'flex-end', gap: 10, position: 'sticky', bottom: 0, background: '#fff' }}>
           <button onClick={onClose} className="btn-secondary">Close</button>
           {applied ? (
             <span className="badge badge-green" style={{ fontSize: 13, padding: '8px 16px' }}>Applied ✓</span>
@@ -73,6 +78,16 @@ export default function JobDetailModal({ job, onClose, onApply, applied }) {
           )}
         </div>
       </div>
+      <style>{`
+        @media (min-width: 641px) {
+          .job-modal-overlay { align-items: center !important; padding: 16px !important; }
+          .job-modal-content { border-radius: 12px !important; }
+          .show-mobile-only { display: none !important; }
+        }
+        @media (max-width: 640px) {
+          .job-modal-content { max-height: 85vh !important; }
+        }
+      `}</style>
     </div>
   )
 }
