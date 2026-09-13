@@ -51,29 +51,27 @@ export default function Landing() {
       </nav>
 
       {/* Hero */}
-      <section className="border-b border-slate-100">
-        <div className="container py-20 lg:py-28">
-          <div className="max-w-3xl">
-            <div className="animate-slide-up">
-              <span className="badge badge-blue mb-6">Smart India Hackathon 2026</span>
-            </div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-5 animate-slide-up delay-1">
-              Healthcare talent,<br />precisely matched.
-            </h1>
-            <p className="text-lg text-slate-500 leading-relaxed mb-8 max-w-xl animate-slide-up delay-2">
-              Clinical skill assessment, intelligent job matching, and application pipeline management — built for the medical education ecosystem.
-            </p>
-            <div className="flex items-center gap-3 animate-slide-up delay-3">
-              <Link to="/register" className="btn-primary text-base px-6 py-3">Create Account</Link>
-              <Link to="/login" className="btn-secondary text-base px-6 py-3">Sign In</Link>
-            </div>
+      <section className="container py-24 lg:py-32">
+        <div className="max-w-3xl">
+          <div className="animate-slide-up">
+            <span className="badge badge-blue mb-6">Smart India Hackathon 2026</span>
+          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-5 animate-slide-up delay-1">
+            Healthcare talent,<br />precisely matched.
+          </h1>
+          <p className="text-lg text-slate-500 leading-relaxed mb-8 max-w-xl animate-slide-up delay-2">
+            Clinical skill assessment, intelligent job matching, and application pipeline management — built for the medical education ecosystem.
+          </p>
+          <div className="flex items-center gap-3 animate-slide-up delay-3">
+            <Link to="/register" className="btn-primary text-base px-6 py-3">Create Account</Link>
+            <Link to="/login" className="btn-secondary text-base px-6 py-3">Sign In</Link>
           </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="border-b border-slate-100 bg-slate-50/50">
-        <div className="container py-16">
+      <section className="bg-slate-50 border-y border-slate-200">
+        <div className="container py-14">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((s, i) => (
               <div key={s.label} className={`animate-slide-up delay-${i + 3}`}>
@@ -87,33 +85,31 @@ export default function Landing() {
       </section>
 
       {/* Features */}
-      <section className="border-b border-slate-100">
-        <div className="container py-20">
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Platform Capabilities</h2>
-            <p className="text-slate-500">End-to-end healthcare talent management infrastructure.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {features.map((f, i) => (
-              <div key={f.title} className={`card p-6 animate-slide-up delay-${i + 3}`}>
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${f.color}10` }}>
-                    <IconSVG type={f.icon} color={f.color} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900 mb-1">{f.title}</h3>
-                    <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
-                  </div>
+      <section className="container py-24">
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Platform Capabilities</h2>
+          <p className="text-slate-500">End-to-end healthcare talent management infrastructure.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {features.map((f, i) => (
+            <div key={f.title} className={`card p-6 animate-slide-up delay-${i + 3}`}>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${f.color}10` }}>
+                  <IconSVG type={f.icon} color={f.color} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-1">{f.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Roles */}
-      <section className="border-b border-slate-100 bg-slate-50/50">
-        <div className="container py-20">
+      <section className="bg-slate-50 border-y border-slate-200">
+        <div className="container py-24">
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-slate-900 mb-2">Role-Based Access</h2>
             <p className="text-slate-500">Tailored interfaces for each stakeholder in the healthcare education pipeline.</p>
@@ -137,8 +133,20 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* CTA */}
+      <section className="container py-24">
+        <div className="bg-slate-900 rounded-2xl p-12 text-center">
+          <h2 className="text-2xl font-bold text-white mb-3">Ready to get started?</h2>
+          <p className="text-slate-400 mb-8 max-w-md mx-auto">Join thousands of healthcare professionals using MedBridge to find the right opportunities.</p>
+          <div className="flex items-center justify-center gap-3">
+            <Link to="/register" className="btn-primary bg-white text-slate-900 hover:bg-slate-100 px-6 py-3">Create Account</Link>
+            <Link to="/login" className="btn-secondary border-slate-700 text-slate-300 hover:bg-slate-800 px-6 py-3">Sign In</Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-white">
+      <footer className="border-t border-slate-200">
         <div className="container py-8 flex items-center justify-between">
           <p className="text-sm text-slate-400">© 2026 MedBridge. Smart India Hackathon.</p>
           <div className="flex items-center gap-4 text-sm text-slate-400">
