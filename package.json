@@ -1,6 +1,7 @@
 {
   "name": "sih2026-portal",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "cd client && npm run dev",
