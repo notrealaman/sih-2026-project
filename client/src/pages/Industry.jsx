@@ -3,6 +3,8 @@ import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 import TopNav from '../components/TopNav'
 
+const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
+
 export default function Industry() {
   const [jobs, setJobs] = useState([])
   const [applied, setApplied] = useState(new Set())
@@ -24,44 +26,44 @@ export default function Industry() {
   const filtered = jobs.filter(j => (filter === 'all' || j.type === filter) && (!search || j.title.toLowerCase().includes(search.toLowerCase()) || j.org_name.toLowerCase().includes(search.toLowerCase())))
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Healthcare Positions" subtitle={`${filtered.length} open roles across healthcare organizations`} />
 
-      <div className="container py-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
-          <div className="relative flex-1 max-w-sm">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search positions..." className="input pl-9" />
+      <div style={{ ...wrap, paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 40, flexWrap: 'wrap' }}>
+          <div style={{ position: 'relative', flex: 1, maxWidth: 384 }}>
+            <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search positions..." className="input" style={{ paddingLeft: 36 }} />
           </div>
           <div className="tab-group">
             {types.map(t => <button key={t} onClick={() => setFilter(t)} className={`tab ${filter === t ? 'tab-active' : ''}`}>{t === 'all' ? 'All' : t}</button>)}
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {filtered.map((job, i) => (
-            <div key={job.id} className="card-elevated p-5 animate-slide-up" style={{ animationDelay: `${i * 0.03}s` }}>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-sm flex-shrink-0">{job.org_name?.[0] || 'H'}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <h3 className="font-semibold text-slate-900">{job.title}</h3>
-                    <span className="badge badge-gray text-[10px]">{job.type}</span>
+            <div key={job.id} className="card-elevated" style={{ padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 8, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{job.org_name?.[0] || 'H'}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                    <h3 style={{ fontWeight: 600, color: '#0f172a' }}>{job.title}</h3>
+                    <span className="badge badge-gray" style={{ fontSize: 10 }}>{job.type}</span>
                   </div>
-                  <p className="text-sm text-slate-500">{job.org_name} · {job.duration} · {job.stipend}</p>
-                  <p className="text-sm text-slate-400 mt-1 line-clamp-1">{job.description}</p>
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {job.required_skills.slice(0, 6).map(s => <span key={s} className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-500">{s}</span>)}
-                    {job.required_skills.length > 6 && <span className="text-[10px] text-slate-400">+{job.required_skills.length - 6}</span>}
+                  <p style={{ fontSize: 14, color: '#64748b' }}>{job.org_name} · {job.duration} · {job.stipend}</p>
+                  <p style={{ fontSize: 14, color: '#94a3b8', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{job.description}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 8 }}>
+                    {job.required_skills.slice(0, 6).map(s => <span key={s} style={{ fontSize: 10, fontWeight: 500, padding: '2px 8px', borderRadius: 4, background: '#f1f5f9', color: '#64748b' }}>{s}</span>)}
+                    {job.required_skills.length > 6 && <span style={{ fontSize: 10, color: '#94a3b8' }}>+{job.required_skills.length - 6}</span>}
                   </div>
                 </div>
-                <div className="shrink-0">
-                  {applied.has(job.id) ? <span className="badge badge-green text-xs">Applied ✓</span> : <button onClick={() => handleApply(job.id)} className="btn-primary text-sm py-2 px-4">Apply</button>}
+                <div style={{ flexShrink: 0 }}>
+                  {applied.has(job.id) ? <span className="badge badge-green" style={{ fontSize: 12 }}>Applied ✓</span> : <button onClick={() => handleApply(job.id)} className="btn-primary" style={{ fontSize: 13, padding: '8px 16px' }}>Apply</button>}
                 </div>
               </div>
             </div>
           ))}
-          {filtered.length === 0 && <div className="card-elevated p-12 text-center"><p className="text-slate-500">No positions match your search.</p></div>}
+          {filtered.length === 0 && <div className="card-elevated" style={{ padding: 48, textAlign: 'center' }}><p style={{ color: '#64748b' }}>No positions match your search.</p></div>}
         </div>
       </div>
     </div>

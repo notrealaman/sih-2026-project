@@ -4,15 +4,17 @@ import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
 import TopNav from '../components/TopNav'
 
+const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
+
 function StatCard({ label, value, change, icon, color }) {
   return (
-    <div className="card-elevated p-5">
-      <div className="flex items-center justify-between mb-3">
-        <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${color}`}>{icon}</div>
-        {change && <span className={`text-xs font-semibold ${change.startsWith('+') ? 'text-green-600' : 'text-red-500'}`}>{change}</span>}
+    <div className="card-elevated" style={{ padding: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+        <div style={{ width: 36, height: 36, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }} className={color}>{icon}</div>
+        {change && <span style={{ fontSize: 12, fontWeight: 600 }} className={change.startsWith('+') ? 'text-green-600' : 'text-red-500'}>{change}</span>}
       </div>
       <div className="stat-value">{value}</div>
-      <div className="stat-label mt-1">{label}</div>
+      <div className="stat-label" style={{ marginTop: 4 }}>{label}</div>
     </div>
   )
 }
@@ -28,11 +30,11 @@ function StudentDashboard() {
   }[s] || 'badge-gray')
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Dashboard" subtitle="Track your applications" />
 
-      <div className="container py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div style={{ ...wrap, paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 40 }}>
           <StatCard label="Total Applied" value={stats?.total || 0} color="bg-blue-50 text-blue-600" change="+3"
             icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>} />
           <StatCard label="Pending Review" value={stats?.pending || 0} color="bg-amber-50 text-amber-600"
@@ -44,38 +46,26 @@ function StudentDashboard() {
         </div>
 
         <div className="card-elevated">
-          <div className="px-6 py-4 border-b border-slate-100">
-            <h2 className="text-base font-semibold text-slate-900">Application History</h2>
+          <div style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9' }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a' }}>Application History</h2>
           </div>
           {apps.length === 0 ? (
-            <div className="p-12 text-center">
-              <p className="text-slate-500 mb-4">No applications yet.</p>
-              <Link to="/student/recommend" className="btn-primary text-sm">Browse Positions</Link>
+            <div style={{ padding: 48, textAlign: 'center' }}>
+              <p style={{ color: '#64748b', marginBottom: 16 }}>No applications yet.</p>
+              <Link to="/student/recommend" className="btn-primary" style={{ fontSize: 13 }}>Browse Positions</Link>
             </div>
           ) : (
             <>
-              <div className="table-header grid-cols-12">
-                <div className="col-span-4">Position</div>
-                <div className="col-span-3">Organization</div>
-                <div className="col-span-2">Match</div>
-                <div className="col-span-2">Status</div>
-                <div className="col-span-1 text-right">Type</div>
+              <div className="table-header" style={{ display: 'grid', gridTemplateColumns: '4fr 3fr 2fr 2fr 1fr' }}>
+                <div>Position</div><div>Organization</div><div>Match</div><div>Status</div><div style={{ textAlign: 'right' }}>Type</div>
               </div>
               {apps.map((app, i) => (
-                <div key={app.id} className="table-row grid-cols-12 animate-slide-up" style={{ animationDelay: `${i * 0.03}s` }}>
-                  <div className="col-span-4">
-                    <div className="font-medium text-slate-900 text-sm">{app.job_title}</div>
-                  </div>
-                  <div className="col-span-3 text-sm text-slate-500">{app.org_name}</div>
-                  <div className="col-span-2">
-                    <span className={`text-sm font-semibold ${app.match_score >= 70 ? 'text-green-600' : app.match_score >= 40 ? 'text-amber-600' : 'text-slate-500'}`}>
-                      {app.match_score}%
-                    </span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className={`badge ${statusBadge(app.status)} capitalize text-[10px]`}>{app.status}</span>
-                  </div>
-                  <div className="col-span-1 text-right text-sm text-slate-500">{app.job_type}</div>
+                <div key={app.id} className="table-row" style={{ display: 'grid', gridTemplateColumns: '4fr 3fr 2fr 2fr 1fr', alignItems: 'center', padding: '14px 24px', borderBottom: '1px solid #f1f5f9' }}>
+                  <div style={{ fontWeight: 500, color: '#0f172a', fontSize: 14 }}>{app.job_title}</div>
+                  <div style={{ fontSize: 14, color: '#64748b' }}>{app.org_name}</div>
+                  <div><span style={{ fontSize: 14, fontWeight: 600, color: app.match_score >= 70 ? '#16a34a' : app.match_score >= 40 ? '#d97706' : '#64748b' }}>{app.match_score}%</span></div>
+                  <div><span className={`badge ${statusBadge(app.status)} capitalize`} style={{ fontSize: 10 }}>{app.status}</span></div>
+                  <div style={{ textAlign: 'right', fontSize: 14, color: '#64748b' }}>{app.job_type}</div>
                 </div>
               ))}
             </>
@@ -109,11 +99,11 @@ export default function Dashboard() {
   const pipelineLabels = ['Pending', 'Reviewed', 'Shortlisted', 'Accepted', 'Rejected']
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Dashboard" subtitle="Manage postings and applicants" />
 
-      <div className="container py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div style={{ ...wrap, paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 40 }}>
           <StatCard label="Active Postings" value={stats?.jobs || 0} color="bg-blue-50 text-blue-600"
             icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" /></svg>} />
           <StatCard label="Total Applications" value={stats?.total || 0} color="bg-purple-50 text-purple-600" change="+8"
@@ -122,84 +112,71 @@ export default function Dashboard() {
             icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>} />
         </div>
 
-        <div className="card-elevated p-6 mb-8">
-          <h3 className="text-sm font-semibold text-slate-900 mb-4">Application Pipeline</h3>
-          <div className="flex items-end gap-3 h-32">
+        <div className="card-elevated" style={{ padding: 24, marginBottom: 40 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 16 }}>Application Pipeline</h3>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, height: 128 }}>
             {pipelineData.map((v, i) => {
               const h = v > 0 ? Math.max(20, (v / Math.max(...pipelineData)) * 100) : 4
               return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-700">{v}</span>
-                  <div className="w-full rounded-t" style={{ height: `${h}%`, background: i === 0 ? '#2563eb' : i === 1 ? '#7c3aed' : i === 2 ? '#d97706' : i === 3 ? '#16a34a' : '#dc2626' }} />
-                  <span className="text-[10px] text-slate-500 font-medium">{pipelineLabels[i]}</span>
+                <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: '#334155' }}>{v}</span>
+                  <div style={{ width: '100%', borderRadius: '4px 4px 0 0', height: `${h}%`, background: i === 0 ? '#2563eb' : i === 1 ? '#7c3aed' : i === 2 ? '#d97706' : i === 3 ? '#16a34a' : '#dc2626' }} />
+                  <span style={{ fontSize: 10, color: '#64748b', fontWeight: 500 }}>{pipelineLabels[i]}</span>
                 </div>
               )
             })}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 24 }}>
+          <div>
             <div className="card-elevated">
-              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-slate-900">Postings</h3>
-                <button onClick={() => setShowNewJob(true)} className="btn-primary text-xs py-1.5 px-3">+ New</button>
+              <div style={{ padding: '12px 16px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a' }}>Postings</h3>
+                <button onClick={() => setShowNewJob(true)} className="btn-primary" style={{ fontSize: 12, padding: '6px 12px' }}>+ New</button>
               </div>
-              <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+              <div style={{ maxHeight: 500, overflowY: 'auto' }}>
                 {jobs.map(job => (
                   <button key={job.id} onClick={() => setSelectedJob(job)}
-                    className={`w-full text-left px-4 py-3 transition-all hover:bg-slate-50 ${
-                      selectedJob?.id === job.id ? 'bg-blue-50 border-l-2 border-l-blue-500' : ''
-                    }`}>
-                    <div className="text-sm font-medium text-slate-900">{job.title}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{job.type} · {job.duration}</div>
+                    style={{ width: '100%', textAlign: 'left', padding: '12px 16px', border: 'none', borderBottom: '1px solid #f1f5f9', background: selectedJob?.id === job.id ? '#eff6ff' : 'transparent', cursor: 'pointer', borderLeft: selectedJob?.id === job.id ? '3px solid #2563eb' : '3px solid transparent' }}>
+                    <div style={{ fontSize: 14, fontWeight: 500, color: '#0f172a' }}>{job.title}</div>
+                    <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{job.type} · {job.duration}</div>
                   </button>
                 ))}
-                {jobs.length === 0 && <p className="text-sm text-slate-400 text-center py-8">No postings yet</p>}
+                {jobs.length === 0 && <p style={{ fontSize: 14, color: '#94a3b8', textAlign: 'center', padding: 32 }}>No postings yet</p>}
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-2">
+          <div>
             <div className="card-elevated">
               {selectedJob ? (
                 <>
-                  <div className="px-6 py-4 border-b border-slate-100">
-                    <h3 className="text-sm font-semibold text-slate-900">Applicants — {selectedJob.title}</h3>
+                  <div style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9' }}>
+                    <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a' }}>Applicants — {selectedJob.title}</h3>
                   </div>
                   {applications.length === 0 ? (
-                    <div className="p-12 text-center"><p className="text-slate-500">No applications yet</p></div>
+                    <div style={{ padding: 48, textAlign: 'center' }}><p style={{ color: '#64748b' }}>No applications yet</p></div>
                   ) : (
                     <>
-                      <div className="table-header grid-cols-12">
-                        <div className="col-span-4">Applicant</div>
-                        <div className="col-span-3">Institution</div>
-                        <div className="col-span-2">Match</div>
-                        <div className="col-span-3">Status</div>
+                      <div className="table-header" style={{ display: 'grid', gridTemplateColumns: '4fr 3fr 2fr 3fr' }}>
+                        <div>Applicant</div><div>Institution</div><div>Match</div><div>Status</div>
                       </div>
                       {applications.map((app, i) => (
-                        <div key={app.id} className="table-row grid-cols-12 animate-slide-up" style={{ animationDelay: `${i * 0.03}s` }}>
-                          <div className="col-span-4">
-                            <div className="font-medium text-slate-900 text-sm">{app.student_name}</div>
-                            <div className="text-xs text-slate-500">{app.student_email}</div>
+                        <div key={app.id} className="table-row" style={{ display: 'grid', gridTemplateColumns: '4fr 3fr 2fr 3fr', alignItems: 'center', padding: '14px 24px', borderBottom: '1px solid #f1f5f9' }}>
+                          <div>
+                            <div style={{ fontWeight: 500, color: '#0f172a', fontSize: 14 }}>{app.student_name}</div>
+                            <div style={{ fontSize: 12, color: '#64748b' }}>{app.student_email}</div>
                           </div>
-                          <div className="col-span-3 text-sm text-slate-500">{app.institution || '—'}</div>
-                          <div className="col-span-2">
-                            <span className={`text-sm font-bold ${app.match_score >= 70 ? 'text-green-600' : app.match_score >= 40 ? 'text-amber-600' : 'text-slate-500'}`}>
-                              {app.match_score}%
-                            </span>
-                          </div>
-                          <div className="col-span-3">
-                            <div className="flex flex-wrap gap-1">
-                              {['pending', 'reviewed', 'shortlisted', 'accepted', 'rejected'].map(s => (
-                                <button key={s} onClick={() => updateStatus(app.id, s)}
-                                  className={`text-[10px] font-semibold px-2 py-1 rounded transition-all ${
-                                    app.status === s ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                                  }`}>
-                                  {s}
-                                </button>
-                              ))}
-                            </div>
+                          <div style={{ fontSize: 14, color: '#64748b' }}>{app.institution || '—'}</div>
+                          <div><span style={{ fontSize: 14, fontWeight: 700, color: app.match_score >= 70 ? '#16a34a' : app.match_score >= 40 ? '#d97706' : '#64748b' }}>{app.match_score}%</span></div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                            {['pending', 'reviewed', 'shortlisted', 'accepted', 'rejected'].map(s => (
+                              <button key={s} onClick={() => updateStatus(app.id, s)}
+                                style={{ fontSize: 10, fontWeight: 600, padding: '4px 8px', borderRadius: 4, border: 'none', cursor: 'pointer', background: app.status === s ? '#0f172a' : '#f1f5f9', color: app.status === s ? '#fff' : '#64748b' }}>
+                                {s}
+                              </button>
+                            ))}
                           </div>
                         </div>
                       ))}
@@ -207,59 +184,55 @@ export default function Dashboard() {
                   )}
                 </>
               ) : (
-                <div className="p-12 text-center">
-                  <p className="text-slate-500">Select a posting to view applicants</p>
-                </div>
+                <div style={{ padding: 48, textAlign: 'center' }}><p style={{ color: '#64748b' }}>Select a posting to view applicants</p></div>
               )}
             </div>
           </div>
         </div>
 
         {showNewJob && (
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowNewJob(false)}>
-            <div className="bg-white rounded-xl border border-slate-200 p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl animate-scale-in" onClick={e => e.stopPropagation()}>
-              <h2 className="text-lg font-semibold text-slate-900 mb-5">New Job Posting</h2>
-              <form onSubmit={createJob} className="space-y-4">
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: 16 }} onClick={() => setShowNewJob(false)}>
+            <div style={{ background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0', padding: 24, width: '100%', maxWidth: 512, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }} onClick={e => e.stopPropagation()}>
+              <h2 style={{ fontSize: 18, fontWeight: 600, color: '#0f172a', marginBottom: 20 }}>New Job Posting</h2>
+              <form onSubmit={createJob} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Title</label>
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Title</label>
                   <input placeholder="e.g. Clinical Research Intern" value={newJob.title} onChange={e => setNewJob(p => ({ ...p, title: e.target.value }))} required className="input" />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Type</label>
+                    <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Type</label>
                     <select value={newJob.type} onChange={e => setNewJob(p => ({ ...p, type: e.target.value }))} className="input">
                       <option>Internship</option><option>Full-time</option><option>Part-time</option><option>Contract</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Duration</label>
+                    <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Duration</label>
                     <input placeholder="e.g. 3 months" value={newJob.duration} onChange={e => setNewJob(p => ({ ...p, duration: e.target.value }))} className="input" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
-                  <textarea placeholder="Role responsibilities and requirements..." value={newJob.description} onChange={e => setNewJob(p => ({ ...p, description: e.target.value }))} className="input h-24 resize-none" />
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Description</label>
+                  <textarea placeholder="Role responsibilities..." value={newJob.description} onChange={e => setNewJob(p => ({ ...p, description: e.target.value }))} className="input" style={{ height: 96, resize: 'none' }} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Stipend</label>
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 6 }}>Stipend</label>
                   <input placeholder="e.g. ₹15,000/month" value={newJob.stipend} onChange={e => setNewJob(p => ({ ...p, stipend: e.target.value }))} className="input" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Required Skills</label>
-                  <div className="flex flex-wrap gap-1.5">
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#334155', marginBottom: 8 }}>Required Skills</label>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {skills.map(s => (
                       <button key={s.id} type="button" onClick={() => toggleSkill(s.id)}
-                        className={`text-xs font-medium px-2.5 py-1 rounded-md border transition-all ${
-                          newJob.required_skills.includes(s.id) ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
-                        }`}>
+                        style={{ fontSize: 12, fontWeight: 500, padding: '4px 10px', borderRadius: 6, border: '1px solid', cursor: 'pointer', transition: 'all 0.15s', borderColor: newJob.required_skills.includes(s.id) ? '#2563eb' : '#e2e8f0', background: newJob.required_skills.includes(s.id) ? '#2563eb' : '#fff', color: newJob.required_skills.includes(s.id) ? '#fff' : '#334155' }}>
                         {s.name}
                       </button>
                     ))}
                   </div>
                 </div>
-                <div className="flex gap-3 pt-2">
-                  <button type="button" onClick={() => setShowNewJob(false)} className="btn-secondary flex-1 justify-center">Cancel</button>
-                  <button type="submit" className="btn-primary flex-1 justify-center">Create Posting</button>
+                <div style={{ display: 'flex', gap: 12, paddingTop: 8 }}>
+                  <button type="button" onClick={() => setShowNewJob(false)} className="btn-secondary" style={{ flex: 1, justifyContent: 'center' }}>Cancel</button>
+                  <button type="submit" className="btn-primary" style={{ flex: 1, justifyContent: 'center' }}>Create Posting</button>
                 </div>
               </form>
             </div>

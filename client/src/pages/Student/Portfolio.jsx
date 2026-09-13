@@ -4,20 +4,20 @@ import { api } from '../../api'
 import { useAuth } from '../../context/AuthContext'
 import TopNav from '../../components/TopNav'
 
+const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
+
 function RadarChart({ skills, size = 280 }) {
   const cx = size / 2, cy = size / 2, r = size / 2 - 30
   const n = skills.length
   if (n < 3) return null
   const getPoint = (i, level) => {
     const angle = (Math.PI * 2 * i) / n - Math.PI / 2
-    const dist = (level / 100) * r
-    return { x: cx + dist * Math.cos(angle), y: cy + dist * Math.sin(angle) }
+    return { x: cx + (level / 100) * r * Math.cos(angle), y: cy + (level / 100) * r * Math.sin(angle) }
   }
-  const gridLevels = [25, 50, 75, 100]
   const skillPoints = skills.map((s, i) => getPoint(i, s.level))
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      {gridLevels.map(level => (
+      {[25, 50, 75, 100].map(level => (
         <polygon key={level} points={skills.map((_, i) => { const p = getPoint(i, level); return `${p.x},${p.y}` }).join(' ')} fill="none" stroke="#e2e8f0" strokeWidth="1" />
       ))}
       {skills.map((_, i) => { const p = getPoint(i, 100); return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="#e2e8f0" strokeWidth="1" /> })}
@@ -27,30 +27,29 @@ function RadarChart({ skills, size = 280 }) {
         const angle = (Math.PI * 2 * i) / n - Math.PI / 2
         const lx = cx + (r + 20) * Math.cos(angle)
         const ly = cy + (r + 20) * Math.sin(angle)
-        const anchor = lx < cx - 5 ? 'end' : lx > cx + 5 ? 'start' : 'middle'
-        return <text key={i} x={lx} y={ly} textAnchor={anchor} dominantBaseline="middle" className="text-[10px] font-medium fill-slate-500">{s.name.length > 12 ? s.name.slice(0, 11) + '…' : s.name}</text>
+        return <text key={i} x={lx} y={ly} textAnchor={lx < cx - 5 ? 'end' : lx > cx + 5 ? 'start' : 'middle'} dominantBaseline="middle" style={{ fontSize: 10, fontWeight: 500, fill: '#64748b' }}>{s.name.length > 12 ? s.name.slice(0, 11) + '…' : s.name}</text>
       })}
     </svg>
   )
 }
 
 function SkillRow({ skill, index }) {
-  const levelColor = skill.level >= 75 ? 'bg-green-500' : skill.level >= 50 ? 'bg-blue-500' : skill.level >= 25 ? 'bg-amber-500' : 'bg-slate-300'
-  const levelBadge = skill.level >= 75 ? 'badge-green' : skill.level >= 50 ? 'badge-blue' : skill.level >= 25 ? 'badge-yellow' : 'badge-gray'
-  const levelLabel = skill.level >= 75 ? 'Expert' : skill.level >= 50 ? 'Proficient' : skill.level >= 25 ? 'Learning' : 'Beginner'
+  const color = skill.level >= 75 ? '#16a34a' : skill.level >= 50 ? '#2563eb' : skill.level >= 25 ? '#d97706' : '#cbd5e1'
+  const badge = skill.level >= 75 ? 'badge-green' : skill.level >= 50 ? 'badge-blue' : skill.level >= 25 ? 'badge-yellow' : 'badge-gray'
+  const label = skill.level >= 75 ? 'Expert' : skill.level >= 50 ? 'Proficient' : skill.level >= 25 ? 'Learning' : 'Beginner'
   return (
-    <div className="flex items-center gap-4 py-3 border-b border-slate-100 last:border-0 animate-slide-up" style={{ animationDelay: `${index * 0.03}s` }}>
-      <span className="text-xs font-medium text-slate-400 w-5">{index + 1}</span>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-sm font-medium text-slate-900">{skill.name}</span>
-          <div className="flex items-center gap-2">
-            <span className={`badge ${levelBadge} text-[10px]`}>{levelLabel}</span>
-            <span className="text-sm font-semibold text-slate-600 tabular-nums w-10 text-right">{skill.level}%</span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 0', borderBottom: '1px solid #f1f5f9' }}>
+      <span style={{ fontSize: 12, fontWeight: 500, color: '#94a3b8', width: 20 }}>{index + 1}</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+          <span style={{ fontSize: 14, fontWeight: 500, color: '#0f172a' }}>{skill.name}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span className={`badge ${badge}`} style={{ fontSize: 10 }}>{label}</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: '#475569', fontVariantNumeric: 'tabular-nums', width: 40, textAlign: 'right' }}>{skill.level}%</span>
           </div>
         </div>
         <div className="progress-track">
-          <div className={`progress-fill ${levelColor}`} style={{ width: `${skill.level}%` }} />
+          <div className="progress-fill" style={{ width: `${skill.level}%`, background: color }} />
         </div>
       </div>
     </div>
@@ -67,57 +66,57 @@ export default function Portfolio() {
   }, [user])
 
   if (!profile) return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Skill Profile" />
-      <div className="container py-16 flex flex-col items-center gap-4">
-        <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+      <div style={{ ...wrap, paddingTop: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <div style={{ width: 64, height: 64, background: '#f1f5f9', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9l3 3-3 3M15 15h-3" /></svg>
         </div>
-        <p className="text-slate-600 font-medium">No clinical profile yet.</p>
+        <p style={{ color: '#475569', fontWeight: 500 }}>No clinical profile yet.</p>
         <Link to="/student/assess" className="btn-primary">Take Assessment</Link>
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <TopNav title="Skill Profile" subtitle="Assessment results and competency mapping" />
 
-      <div className="container py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <div className="card-elevated p-6">
-              <div className="section-header">
-                <h2 className="text-base font-semibold text-slate-900">Skill Breakdown</h2>
+      <div style={{ ...wrap, paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
+          <div>
+            <div className="card-elevated" style={{ padding: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+                <h2 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a' }}>Skill Breakdown</h2>
                 <span className="badge badge-gray">{profile.profile.length} skills</span>
               </div>
               <div>{profile.profile.map((skill, i) => <SkillRow key={skill.id} skill={skill} index={i} />)}</div>
             </div>
           </div>
-          <div className="space-y-4">
-            <div className="card-elevated p-6">
-              <h3 className="text-base font-semibold text-slate-900 mb-4">Skill Radar</h3>
-              <div className="flex justify-center"><RadarChart skills={profile.profile.slice(0, 10)} /></div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className="card-elevated" style={{ padding: 24 }}>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 16 }}>Skill Radar</h3>
+              <div style={{ display: 'flex', justifyContent: 'center' }}><RadarChart skills={profile.profile.slice(0, 10)} /></div>
             </div>
-            <div className="card-elevated p-6">
-              <h3 className="text-base font-semibold text-slate-900 mb-4">Summary</h3>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center"><div className="text-2xl font-bold text-slate-900">{profile.profile.length}</div><div className="text-xs text-slate-500 mt-0.5">Skills</div></div>
-                <div className="text-center"><div className="text-2xl font-bold text-green-600">{profile.topSkills.length}</div><div className="text-xs text-slate-500 mt-0.5">Strengths</div></div>
-                <div className="text-center"><div className="text-2xl font-bold text-amber-600">{profile.gapSkills.length}</div><div className="text-xs text-slate-500 mt-0.5">Gaps</div></div>
+            <div className="card-elevated" style={{ padding: 24 }}>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 16 }}>Summary</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+                <div style={{ textAlign: 'center' }}><div style={{ fontSize: 24, fontWeight: 700, color: '#0f172a' }}>{profile.profile.length}</div><div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>Skills</div></div>
+                <div style={{ textAlign: 'center' }}><div style={{ fontSize: 24, fontWeight: 700, color: '#16a34a' }}>{profile.topSkills.length}</div><div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>Strengths</div></div>
+                <div style={{ textAlign: 'center' }}><div style={{ fontSize: 24, fontWeight: 700, color: '#d97706' }}>{profile.gapSkills.length}</div><div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>Gaps</div></div>
               </div>
             </div>
-            <div className="card-elevated p-6">
-              <h3 className="text-sm font-semibold text-slate-900 mb-3">Strengths</h3>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {profile.topSkills.length ? profile.topSkills.map(s => <span key={s.id} className="badge badge-green text-[10px]">{s.name}</span>) : <span className="text-xs text-slate-400">None identified</span>}
+            <div className="card-elevated" style={{ padding: 24 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Strengths</h3>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+                {profile.topSkills.length ? profile.topSkills.map(s => <span key={s.id} className="badge badge-green" style={{ fontSize: 10 }}>{s.name}</span>) : <span style={{ fontSize: 12, color: '#94a3b8' }}>None identified</span>}
               </div>
-              <h3 className="text-sm font-semibold text-slate-900 mb-3">Gaps</h3>
-              <div className="flex flex-wrap gap-1.5">
-                {profile.gapSkills.length ? profile.gapSkills.map(s => <span key={s.id} className="badge badge-yellow text-[10px]">{s.name}</span>) : <span className="text-xs text-green-600 font-medium">No gaps identified</span>}
+              <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 12 }}>Gaps</h3>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {profile.gapSkills.length ? profile.gapSkills.map(s => <span key={s.id} className="badge badge-yellow" style={{ fontSize: 10 }}>{s.name}</span>) : <span style={{ fontSize: 12, color: '#16a34a', fontWeight: 500 }}>No gaps identified</span>}
               </div>
             </div>
-            <Link to="/student/recommend" className="btn-primary w-full justify-center">View Opportunities →</Link>
+            <Link to="/student/recommend" className="btn-primary" style={{ justifyContent: 'center' }}>View Opportunities →</Link>
           </div>
         </div>
       </div>
