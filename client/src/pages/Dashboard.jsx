@@ -2,20 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
-
-function MiniChart({ data, color = '#2563eb', height = 40 }) {
-  if (!data || data.length < 2) return null
-  const max = Math.max(...data)
-  const min = Math.min(...data)
-  const range = max - min || 1
-  const w = 100 / (data.length - 1)
-  const points = data.map((v, i) => `${i * w},${height - ((v - min) / range) * (height - 4)}`).join(' ')
-  return (
-    <svg width="100%" height={height} viewBox={`0 0 100 ${height}`} preserveAspectRatio="none">
-      <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
+import TopNav from '../components/TopNav'
 
 function StatCard({ label, value, change, icon, color }) {
   return (
@@ -40,22 +27,12 @@ function StudentDashboard() {
     pending: 'badge-yellow', reviewed: 'badge-blue', shortlisted: 'badge-purple', accepted: 'badge-green', rejected: 'badge-red'
   }[s] || 'badge-gray')
 
-  const chartData = [12, 19, 8, 15, 22, 18, 25]
-
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200">
-        <div className="container py-6">
-          <Link to="/" className="text-sm text-slate-400 hover:text-slate-600 mb-3 inline-flex items-center gap-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 19l-7-7 7-7" /></svg> Home
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900">Application Dashboard</h1>
-          <p className="text-sm text-slate-500 mt-1">Track your applications and their progress</p>
-        </div>
-      </div>
+      <TopNav title="Dashboard" subtitle="Track your applications" />
 
-      <div className="container py-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="container py-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <StatCard label="Total Applied" value={stats?.total || 0} color="bg-blue-50 text-blue-600" change="+3"
             icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>} />
           <StatCard label="Pending Review" value={stats?.pending || 0} color="bg-amber-50 text-amber-600"
@@ -76,31 +53,33 @@ function StudentDashboard() {
               <Link to="/student/recommend" className="btn-primary text-sm">Browse Positions</Link>
             </div>
           ) : (
-            <div className="table-header grid-cols-12">
-              <div className="col-span-4">Position</div>
-              <div className="col-span-3">Organization</div>
-              <div className="col-span-2">Match</div>
-              <div className="col-span-2">Status</div>
-              <div className="col-span-1 text-right">Type</div>
-            </div>
+            <>
+              <div className="table-header grid-cols-12">
+                <div className="col-span-4">Position</div>
+                <div className="col-span-3">Organization</div>
+                <div className="col-span-2">Match</div>
+                <div className="col-span-2">Status</div>
+                <div className="col-span-1 text-right">Type</div>
+              </div>
+              {apps.map((app, i) => (
+                <div key={app.id} className="table-row grid-cols-12 animate-slide-up" style={{ animationDelay: `${i * 0.03}s` }}>
+                  <div className="col-span-4">
+                    <div className="font-medium text-slate-900 text-sm">{app.job_title}</div>
+                  </div>
+                  <div className="col-span-3 text-sm text-slate-500">{app.org_name}</div>
+                  <div className="col-span-2">
+                    <span className={`text-sm font-semibold ${app.match_score >= 70 ? 'text-green-600' : app.match_score >= 40 ? 'text-amber-600' : 'text-slate-500'}`}>
+                      {app.match_score}%
+                    </span>
+                  </div>
+                  <div className="col-span-2">
+                    <span className={`badge ${statusBadge(app.status)} capitalize text-[10px]`}>{app.status}</span>
+                  </div>
+                  <div className="col-span-1 text-right text-sm text-slate-500">{app.job_type}</div>
+                </div>
+              ))}
+            </>
           )}
-          {apps.map((app, i) => (
-            <div key={app.id} className="table-row grid-cols-12 animate-slide-up" style={{ animationDelay: `${i * 0.03}s` }}>
-              <div className="col-span-4">
-                <div className="font-medium text-slate-900 text-sm">{app.job_title}</div>
-              </div>
-              <div className="col-span-3 text-sm text-slate-500">{app.org_name}</div>
-              <div className="col-span-2">
-                <span className={`text-sm font-semibold ${app.match_score >= 70 ? 'text-green-600' : app.match_score >= 40 ? 'text-amber-600' : 'text-slate-500'}`}>
-                  {app.match_score}%
-                </span>
-              </div>
-              <div className="col-span-2">
-                <span className={`badge ${statusBadge(app.status)} capitalize text-[10px]`}>{app.status}</span>
-              </div>
-              <div className="col-span-1 text-right text-sm text-slate-500">{app.job_type}</div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -131,18 +110,10 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200">
-        <div className="container py-6">
-          <Link to="/" className="text-sm text-slate-400 hover:text-slate-600 mb-3 inline-flex items-center gap-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 19l-7-7 7-7" /></svg> Home
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900">{user?.name || 'Organization'} Dashboard</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage job postings and review applicants</p>
-        </div>
-      </div>
+      <TopNav title="Dashboard" subtitle="Manage postings and applicants" />
 
-      <div className="container py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="container py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <StatCard label="Active Postings" value={stats?.jobs || 0} color="bg-blue-50 text-blue-600"
             icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" /></svg>} />
           <StatCard label="Total Applications" value={stats?.total || 0} color="bg-purple-50 text-purple-600" change="+8"
@@ -151,8 +122,7 @@ export default function Dashboard() {
             icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>} />
         </div>
 
-        {/* Pipeline */}
-        <div className="card-elevated p-6 mb-6">
+        <div className="card-elevated p-6 mb-8">
           <h3 className="text-sm font-semibold text-slate-900 mb-4">Application Pipeline</h3>
           <div className="flex items-end gap-3 h-32">
             {pipelineData.map((v, i) => {
@@ -169,7 +139,6 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Jobs list */}
           <div className="lg:col-span-1">
             <div className="card-elevated">
               <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
@@ -191,7 +160,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Applications */}
           <div className="lg:col-span-2">
             <div className="card-elevated">
               {selectedJob ? (
@@ -247,7 +215,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* New job modal */}
         {showNewJob && (
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowNewJob(false)}>
             <div className="bg-white rounded-xl border border-slate-200 p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl animate-scale-in" onClick={e => e.stopPropagation()}>
