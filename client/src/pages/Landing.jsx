@@ -24,20 +24,22 @@ const IconSVG = ({ type, color }) => {
   return null
 }
 
+const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
+
 export default function Landing() {
   const { user } = useAuth()
   return (
-    <div className="min-h-screen bg-white">
+    <div style={{ minHeight: '100vh', background: '#fff' }}>
       {/* Nav */}
-      <nav className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+      <nav style={{ borderBottom: '1px solid #e2e8f0', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)', position: 'sticky', top: 0, zIndex: 50 }}>
+        <div style={{ ...wrap, display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+            <div style={{ width: 32, height: 32, background: '#0f172a', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6v0a6 6 0 006-2V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3" /><path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-2v-4" /><circle cx="20" cy="10" r="2" /></svg>
             </div>
-            <span className="text-lg font-bold text-slate-900 tracking-tight">MedBridge</span>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#0f172a', letterSpacing: '-0.01em' }}>MedBridge</span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             {user ? (
               <Link to={user.role === 'student' ? '/student/portfolio' : '/dashboard'} className="btn-primary text-sm">Dashboard</Link>
             ) : (
@@ -51,30 +53,30 @@ export default function Landing() {
       </nav>
 
       {/* Hero */}
-      <section className="container py-24 lg:py-32">
-        <div className="max-w-3xl">
-          <div className="animate-slide-up">
-            <span className="badge badge-blue mb-6">Smart India Hackathon 2026</span>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-5 animate-slide-up delay-1">
-            Healthcare talent,<br />precisely matched.
-          </h1>
-          <p className="text-lg text-slate-500 leading-relaxed mb-8 max-w-xl animate-slide-up delay-2">
-            Clinical skill assessment, intelligent job matching, and application pipeline management — built for the medical education ecosystem.
-          </p>
-          <div className="flex items-center gap-3 animate-slide-up delay-3">
-            <Link to="/register" className="btn-primary text-base px-6 py-3">Create Account</Link>
-            <Link to="/login" className="btn-secondary text-base px-6 py-3">Sign In</Link>
+      <section style={{ padding: '100px 0 120px' }}>
+        <div style={wrap}>
+          <div style={{ maxWidth: 720 }}>
+            <span className="badge badge-blue" style={{ marginBottom: 24, display: 'inline-flex' }}>Smart India Hackathon 2026</span>
+            <h1 style={{ fontSize: 48, fontWeight: 700, color: '#0f172a', lineHeight: 1.15, marginBottom: 20, letterSpacing: '-0.02em' }}>
+              Healthcare talent,<br />precisely matched.
+            </h1>
+            <p style={{ fontSize: 18, color: '#64748b', lineHeight: 1.7, marginBottom: 32, maxWidth: 560 }}>
+              Clinical skill assessment, intelligent job matching, and application pipeline management — built for the medical education ecosystem.
+            </p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <Link to="/register" className="btn-primary" style={{ fontSize: 16, padding: '14px 28px' }}>Create Account</Link>
+              <Link to="/login" className="btn-secondary" style={{ fontSize: 16, padding: '14px 28px' }}>Sign In</Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="bg-slate-50 border-y border-slate-200">
-        <div className="container py-14">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((s, i) => (
-              <div key={s.label} className={`animate-slide-up delay-${i + 3}`}>
+      <section style={{ background: '#f8fafc' }}>
+        <div style={{ ...wrap, padding: '56px 24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+            {stats.map((s) => (
+              <div key={s.label}>
                 <div className="stat-label">{s.label}</div>
                 <div className="stat-value">{s.value}</div>
                 <div className={`stat-change ${s.up ? 'stat-up' : 'stat-down'}`}>{s.change} this month</div>
@@ -84,47 +86,55 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Spacer */}
+      <div style={{ height: 80 }} />
+
       {/* Features */}
-      <section className="container py-24">
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Platform Capabilities</h2>
-          <p className="text-slate-500">End-to-end healthcare talent management infrastructure.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {features.map((f, i) => (
-            <div key={f.title} className={`card p-6 animate-slide-up delay-${i + 3}`}>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${f.color}10` }}>
-                  <IconSVG type={f.icon} color={f.color} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-900 mb-1">{f.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
+      <section>
+        <div style={wrap}>
+          <div style={{ marginBottom: 48 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Platform Capabilities</h2>
+            <p style={{ color: '#64748b' }}>End-to-end healthcare talent management infrastructure.</p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }}>
+            {features.map((f) => (
+              <div key={f.title} className="card" style={{ padding: 24 }}>
+                <div style={{ display: 'flex', gap: 16 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: `${f.color}10` }}>
+                    <IconSVG type={f.icon} color={f.color} />
+                  </div>
+                  <div>
+                    <h3 style={{ fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>{f.title}</h3>
+                    <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>{f.desc}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
+      {/* Spacer */}
+      <div style={{ height: 80 }} />
+
       {/* Roles */}
-      <section className="bg-slate-50 border-y border-slate-200">
-        <div className="container py-24">
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Role-Based Access</h2>
-            <p className="text-slate-500">Tailored interfaces for each stakeholder in the healthcare education pipeline.</p>
+      <section style={{ background: '#f8fafc' }}>
+        <div style={{ ...wrap, padding: '80px 24px' }}>
+          <div style={{ marginBottom: 48 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>Role-Based Access</h2>
+            <p style={{ color: '#64748b' }}>Tailored interfaces for each stakeholder in the healthcare education pipeline.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
             {[
               { role: 'Students', desc: 'Assess clinical competencies, discover opportunities, track applications.', path: '/student/assess', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
               { role: 'Academicians', desc: 'Fellowships, FDPs, research collaborations, and consultancy opportunities.', path: '/academician', icon: 'M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.42A12 12 0 0112 22.56' },
               { role: 'Organizations', desc: 'Post positions, manage applicants, analytics, and hiring pipeline.', path: '/industry', icon: 'M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16' }
-            ].map((r, i) => (
-              <Link key={r.role} to={r.path} className={`card p-6 group animate-slide-up delay-${i + 3}`}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mb-4"><path d={r.icon} /></svg>
-                <h3 className="font-semibold text-slate-900 mb-1">{r.role}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed mb-4">{r.desc}</p>
-                <span className="text-sm font-medium text-blue-600 flex items-center gap-1 group-hover:gap-2 transition-all">
+            ].map((r) => (
+              <Link key={r.role} to={r.path} className="card" style={{ padding: 24, textDecoration: 'none', display: 'block' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 16 }}><path d={r.icon} /></svg>
+                <h3 style={{ fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>{r.role}</h3>
+                <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.6, marginBottom: 16 }}>{r.desc}</p>
+                <span style={{ fontSize: 14, fontWeight: 500, color: '#2563eb', display: 'flex', alignItems: 'center', gap: 4 }}>
                   Explore <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                 </span>
               </Link>
@@ -133,23 +143,31 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Spacer */}
+      <div style={{ height: 80 }} />
+
       {/* CTA */}
-      <section className="container py-24">
-        <div className="bg-slate-900 rounded-2xl p-12 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Ready to get started?</h2>
-          <p className="text-slate-400 mb-8 max-w-md mx-auto">Join thousands of healthcare professionals using MedBridge to find the right opportunities.</p>
-          <div className="flex items-center justify-center gap-3">
-            <Link to="/register" className="btn-primary bg-white text-slate-900 hover:bg-slate-100 px-6 py-3">Create Account</Link>
-            <Link to="/login" className="btn-secondary border-slate-700 text-slate-300 hover:bg-slate-800 px-6 py-3">Sign In</Link>
+      <section>
+        <div style={wrap}>
+          <div style={{ background: '#0f172a', borderRadius: 16, padding: '60px 48px', textAlign: 'center' }}>
+            <h2 style={{ fontSize: 24, fontWeight: 700, color: '#fff', marginBottom: 12 }}>Ready to get started?</h2>
+            <p style={{ color: '#94a3b8', marginBottom: 32, maxWidth: 440, margin: '0 auto 32px' }}>Join thousands of healthcare professionals using MedBridge to find the right opportunities.</p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
+              <Link to="/register" className="btn-primary" style={{ background: '#fff', color: '#0f172a', padding: '14px 28px' }}>Create Account</Link>
+              <Link to="/login" className="btn-secondary" style={{ borderColor: '#334155', color: '#cbd5e1', padding: '14px 28px' }}>Sign In</Link>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Spacer */}
+      <div style={{ height: 80 }} />
+
       {/* Footer */}
-      <footer className="border-t border-slate-200">
-        <div className="container py-8 flex items-center justify-between">
-          <p className="text-sm text-slate-400">© 2026 MedBridge. Smart India Hackathon.</p>
-          <div className="flex items-center gap-4 text-sm text-slate-400">
+      <footer style={{ borderTop: '1px solid #e2e8f0' }}>
+        <div style={{ ...wrap, padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <p style={{ fontSize: 14, color: '#94a3b8' }}>© 2026 MedBridge. Smart India Hackathon.</p>
+          <div style={{ display: 'flex', gap: 16, fontSize: 14, color: '#94a3b8' }}>
             <span>Documentation</span>
             <span>Support</span>
           </div>
