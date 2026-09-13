@@ -1,23 +1,39 @@
 @tailwind base;
 @tailwind utilities;
 
-body { margin: 0; -webkit-font-smoothing: antialiased; }
+body { margin: 0; -webkit-font-smoothing: antialiased; background: #030712; }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
-  50% { box-shadow: 0 0 40px rgba(99,102,241,0.6); }
-}
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-float { animation: float 4s ease-in-out infinite; }
-.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-.animate-fade-in-up { animation: fade-in-up 0.5s ease-out both; }
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
+@keyframes float { 0%,100% { transform: translateY(0px) } 50% { transform: translateY(-14px) } }
+@keyframes float-delay { 0%,100% { transform: translateY(0px) } 50% { transform: translateY(-10px) } }
+@keyframes spin-slow { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+@keyframes pulse-ring { 0% { transform: scale(0.9); opacity: 1 } 100% { transform: scale(1.5); opacity: 0 } }
+@keyframes fade-in-up { from { opacity: 0; transform: translateY(30px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slide-in-left { from { opacity: 0; transform: translateX(-40px) } to { opacity: 1; transform: translateX(0) } }
+@keyframes slide-in-right { from { opacity: 0; transform: translateX(40px) } to { opacity: 1; transform: translateX(0) } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.8) } to { opacity: 1; transform: scale(1) } }
+@keyframes draw-line { from { stroke-dashoffset: 200 } to { stroke-dashoffset: 0 } }
+@keyframes shimmer { 0% { background-position: -200% 0 } 100% { background-position: 200% 0 } }
+@keyframes wave { 0%,100% { d: path('M0,80 C150,120 350,40 500,80 C650,120 850,40 1000,80 L1000,200 L0,200 Z') } 50% { d: path('M0,100 C150,60 350,120 500,100 C650,60 850,120 1000,100 L1000,200 L0,200 Z') } }
+@keyframes heartbeat { 0%,100% { transform: scale(1) } 14% { transform: scale(1.1) } 28% { transform: scale(1) } 42% { transform: scale(1.1) } 70% { transform: scale(1) } }
+@keyframes gradient-shift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
+
+.animate-float { animation: float 5s ease-in-out infinite; }
+.animate-float-delay { animation: float-delay 6s ease-in-out infinite 1s; }
+.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+.animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+.animate-fade-in-up { animation: fade-in-up 0.6s ease-out both; }
+.animate-fade-in { animation: fade-in 0.5s ease-out both; }
+.animate-slide-left { animation: slide-in-left 0.6s ease-out both; }
+.animate-slide-right { animation: slide-in-right 0.6s ease-out both; }
+.animate-scale-in { animation: scale-in 0.5s ease-out both; }
+.animate-heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+.animate-gradient { background-size: 200% 200%; animation: gradient-shift 4s ease infinite; }
+
+.delay-75 { animation-delay: 0.075s } .delay-100 { animation-delay: 0.1s } .delay-150 { animation-delay: 0.15s }
+.delay-200 { animation-delay: 0.2s } .delay-300 { animation-delay: 0.3s } .delay-400 { animation-delay: 0.4s }
+.delay-500 { animation-delay: 0.5s } .delay-700 { animation-delay: 0.7s } .delay-1000 { animation-delay: 1s }
+
+.glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06); }
+.text-gradient { background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.bg-mesh { background-image: radial-gradient(at 40% 20%, rgba(99,102,241,0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(168,85,247,0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(236,72,153,0.08) 0px, transparent 50%); }

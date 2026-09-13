@@ -10,7 +10,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = sessionStorage.getItem('token')
     if (!token) { setLoading(false); return }
-    api.me().then(setUser).catch(() => sessionStorage.removeItem('token')).finally(() => setLoading(false))
+    api.me().then(setUser).catch(() => { sessionStorage.removeItem('token'); setLoading(false) })
+    setTimeout(() => setLoading(false), 2000)
   }, [])
 
   const login = async (email, password) => {
