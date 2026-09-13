@@ -7,59 +7,59 @@ import { dirname, join } from 'path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-export function seed() {
-  const userCount = db.prepare('SELECT COUNT(*) as c FROM users').get().c
-  if (userCount > 0) return
+export async function seed() {
+  const res = await db.query('SELECT COUNT(*) as c FROM users')
+  if (parseInt(res.rows[0].c) > 0) return
 
   const skills = JSON.parse(readFileSync(join(__dirname, 'data/skills.json')))
   const questions = JSON.parse(readFileSync(join(__dirname, 'data/questions.json')))
   const companies = JSON.parse(readFileSync(join(__dirname, 'data/companies.json')))
   const academicianOpps = JSON.parse(readFileSync(join(__dirname, 'data/academician_opportunities.json')))
 
-  const insertSkill = db.prepare('INSERT INTO skills (id, name, category) VALUES (?, ?, ?)')
-  const insertQuestion = db.prepare('INSERT INTO questions (id, text, skill_id, options) VALUES (?, ?, ?, ?)')
-  const insertUser = db.prepare('INSERT INTO users (id, name, email, password, role, institution) VALUES (?, ?, ?, ?, ?, ?)')
-  const insertJob = db.prepare('INSERT INTO job_postings (id, org_id, title, type, description, required_skills, stipend, duration, location) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
-  const insertCourse = db.prepare('INSERT INTO training_programs (id, org_id, title, skills, description, duration, is_free) VALUES (?, ?, ?, ?, ?, ?, ?)')
-  const insertAcademicOpp = db.prepare('INSERT INTO academician_opportunities (id, title, type, skills, duration, description) VALUES (?, ?, ?, ?, ?, ?)')
+  const hash = bcrypt.hashSync('password123', 10)
 
-  const seedAll = db.transaction(() => {
-    // Skills
-    for (const s of skills) insertSkill.run(s.id, s.name, s.category)
+  // Skills
+  for (const s of skills) {
+    await db.query('INSERT INTO skills (id, name, category) VALUES ($1,$2,$3)', [s.id, s.name, s.category])
+  }
 
-    // Questions
-    for (const q of questions) insertQuestion.run(q.id, q.text, q.skillId, JSON.stringify(q.options))
+  // Questions
+  for (const q of questions) {
+    await db.query('INSERT INTO questions (id, text, skill_id, options) VALUES ($1,$2,$3,$4)', [q.id, q.text, q.skillId, JSON.stringify(q.options)])
+  }
 
-    // Demo users
-    const hash = bcrypt.hashSync('password123', 10)
-    const studentId = uuid()
-    const acadId = uuid()
-    const orgIds = []
+  // Demo users
+  const studentId = uuid()
+  const acadId = uuid()
 
-    insertUser.run(studentId, 'Priya Sharma', 'priya@demo.com', hash, 'student', 'AIIMS Delhi')
-    insertUser.run(acadId, 'Dr. Rajesh Kumar', 'rajesh@demo.com', hash, 'academician', 'JIPMER')
-    insertUser.run(uuid(), 'Demo Student 2', 'student2@demo.com', hash, 'student', 'CMC Vellore')
+  await db.query('INSERT INTO users (id, name, email, password, role, institution) VALUES ($1,$2,$3,$4,$5,$6)',
+    [studentId, 'Priya Sharma', 'priya@demo.com', hash, 'student', 'AIIMS Delhi'])
+  await db.query('INSERT INTO users (id, name, email, password, role, institution) VALUES ($1,$2,$3,$4,$5,$6)',
+    [acadId, 'Dr. Rajesh Kumar', 'rajesh@demo.com', hash, 'academician', 'JIPMER'])
+  await db.query('INSERT INTO users (id, name, email, password, role, institution) VALUES ($1,$2,$3,$4,$5,$6)',
+    [uuid(), 'Demo Student 2', 'student2@demo.com', hash, 'student', 'CMC Vellore'])
 
-    // Organizations + jobs
-    for (const co of companies) {
-      const orgId = uuid()
-      orgIds.push(orgId)
-      insertUser.run(orgId, co.name, `${co.name.toLowerCase().replace(/\s+/g, '')}@demo.com`, hash, 'organization', co.name)
+  // Organizations + jobs + courses
+  for (const co of companies) {
+    const orgId = uuid()
+    await db.query('INSERT INTO users (id, name, email, password, role, institution) VALUES ($1,$2,$3,$4,$5,$6)',
+      [orgId, co.name, `${co.name.toLowerCase().replace(/\s+/g, '')}@demo.com`, hash, 'organization', co.name])
 
-      for (const job of co.jobs) {
-        insertJob.run(job.id, orgId, job.title, job.type, job.description, JSON.stringify(job.requiredSkills), job.stipend, job.duration, 'India')
-      }
-      for (const course of co.courses) {
-        insertCourse.run(course.id, orgId, course.title, JSON.stringify(course.skills), course.title, course.duration, course.free ? 1 : 0)
-      }
+    for (const job of co.jobs) {
+      await db.query('INSERT INTO job_postings (id, org_id, title, type, description, required_skills, stipend, duration, location) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)',
+        [job.id, orgId, job.title, job.type, job.description, JSON.stringify(job.requiredSkills), job.stipend, job.duration, 'India'])
     }
-
-    // Academician opportunities
-    for (const opp of academicianOpps) {
-      insertAcademicOpp.run(opp.id, opp.title, opp.type, JSON.stringify(opp.skills), opp.duration, opp.description)
+    for (const course of co.courses) {
+      await db.query('INSERT INTO training_programs (id, org_id, title, skills, description, duration, is_free) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+        [course.id, orgId, course.title, JSON.stringify(course.skills), course.title, course.duration, course.free ? true : false])
     }
-  })
+  }
 
-  seedAll()
+  // Academician opportunities
+  for (const opp of academicianOpps) {
+    await db.query('INSERT INTO academician_opportunities (id, title, type, skills, duration, description) VALUES ($1,$2,$3,$4,$5,$6)',
+      [opp.id, opp.title, opp.type, JSON.stringify(opp.skills), opp.duration, opp.description])
+  }
+
   console.log('Database seeded with demo data')
 }

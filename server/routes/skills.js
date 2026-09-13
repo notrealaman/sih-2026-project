@@ -5,15 +5,15 @@ import { auth } from '../auth.js'
 
 const router = Router()
 
-router.get('/questions', (req, res) => {
-  const questions = db.prepare('SELECT q.*, s.name as skill_name FROM questions q JOIN skills s ON q.skill_id = s.id ORDER BY q.rowid').all()
-  res.json(questions.map(q => ({ ...q, options: JSON.parse(q.options) })))
+router.get('/questions', async (req, res) => {
+  const { rows: questions } = await db.query('SELECT q.*, s.name as skill_name FROM questions q JOIN skills s ON q.skill_id = s.id ORDER BY q.id')
+  res.json(questions.map(q => ({ ...q, options: q.options })))
 })
 
-router.post('/assess', auth, (req, res) => {
+router.post('/assess', auth, async (req, res) => {
   const { answers } = req.body
-  const questions = db.prepare('SELECT * FROM questions ORDER BY rowid').all()
-  const skills = db.prepare('SELECT * FROM skills').all()
+  const { rows: questions } = await db.query('SELECT * FROM questions ORDER BY id')
+  const { rows: skills } = await db.query('SELECT * FROM skills')
 
   const scores = {}
   questions.forEach((q, i) => {
@@ -27,20 +27,20 @@ router.post('/assess', auth, (req, res) => {
   const result = { profile, topSkills: profile.filter(s => s.level >= 66), gapSkills: profile.filter(s => s.level < 50) }
 
   const id = uuid()
-  db.prepare('INSERT INTO assessments (id, user_id, answers, profile) VALUES (?,?,?,?)')
+  await db.prepare('INSERT INTO assessments (id, user_id, answers, profile) VALUES ($1,$2,$3,$4)')
     .run(id, req.user.id, JSON.stringify(answers), JSON.stringify(result))
 
   res.json(result)
 })
 
-router.get('/profile', auth, (req, res) => {
-  const assessment = db.prepare('SELECT profile FROM assessments WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').get(req.user.id)
-  if (!assessment) return res.json(null)
-  res.json(JSON.parse(assessment.profile))
+router.get('/profile', auth, async (req, res) => {
+  const { rows } = await db.prepare('SELECT profile FROM assessments WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1').all(req.user.id)
+  if (!rows[0]) return res.json(null)
+  res.json(rows[0].profile)
 })
 
-router.get('/', (req, res) => {
-  const skills = db.prepare('SELECT * FROM skills ORDER BY category, name').all()
+router.get('/', async (req, res) => {
+  const { rows: skills } = await db.query('SELECT * FROM skills ORDER BY category, name')
   res.json(skills)
 })
 
