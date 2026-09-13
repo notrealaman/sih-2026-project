@@ -97,7 +97,7 @@ export default function Assess() {
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-8 leading-snug">{q.text}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {q.options.map((opt, i) => (
-                <button key={i} onClick={() => handleAnswer(i, i)}
+                <button key={i} onClick={() => handleAnswer(step, i)}
                   className={`p-4 rounded-2xl border-2 text-left font-semibold transition-all duration-200 ${
                     answers[step] === i
                       ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300 shadow-lg shadow-indigo-500/10 scale-[1.02]'
