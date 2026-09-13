@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { api } from '../../api'
 import { useAuth } from '../../context/AuthContext'
 import TopNav from '../../components/TopNav'
+import JobDetailModal from '../../components/JobDetailModal'
 
 const wrap = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
 
@@ -22,6 +23,7 @@ export default function Recommend() {
   const [applied, setApplied] = useState(new Set())
   const [filter, setFilter] = useState('all')
   const [sortBy, setSortBy] = useState('match')
+  const [selectedJob, setSelectedJob] = useState(null)
   const { user } = useAuth()
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function Recommend() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {sorted.map((job, i) => (
-            <div key={job.id} className="card-elevated" style={{ padding: 20 }}>
+            <div key={job.id} className="card-elevated" style={{ padding: 20, cursor: 'pointer', transition: 'border-color 0.15s' }} onClick={() => setSelectedJob(job)}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 8, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>{job.org_name?.[0] || 'H'}</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -93,7 +95,7 @@ export default function Recommend() {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
                   <MatchBar score={job.matchScore} />
-                  {applied.has(job.id) ? <span className="badge badge-green" style={{ fontSize: 12 }}>Applied ✓</span> : <button onClick={() => handleApply(job.id)} className="btn-primary" style={{ fontSize: 13, padding: '8px 16px' }}>Apply</button>}
+                  {applied.has(job.id) ? <span className="badge badge-green" style={{ fontSize: 12 }}>Applied ✓</span> : <button onClick={e => { e.stopPropagation(); handleApply(job.id) }} className="btn-primary" style={{ fontSize: 13, padding: '8px 16px' }}>Apply</button>}
                 </div>
               </div>
             </div>
@@ -101,6 +103,7 @@ export default function Recommend() {
           {sorted.length === 0 && <div className="card-elevated" style={{ padding: 48, textAlign: 'center' }}><p style={{ color: '#64748b' }}>No positions match the current filter.</p></div>}
         </div>
       </div>
+      {selectedJob && <JobDetailModal job={selectedJob} onClose={() => setSelectedJob(null)} onApply={(id) => { handleApply(id); setSelectedJob(null) }} applied={applied.has(selectedJob?.id)} />}
     </div>
   )
 }
